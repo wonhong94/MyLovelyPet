@@ -60,6 +60,11 @@
   background-color: #0056b3;
 }
 
+.submit-group {
+  display: flex;
+  justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+}
+
 .image-section {
   display: flex;
   flex-direction: column;

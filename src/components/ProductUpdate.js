@@ -127,9 +127,7 @@ const ProductRegister = ({ product, closeModal }) => {
             <label>최소 수량:</label>
             <input type="number" name="pdLimit" value={formData.pdLimit} onChange={handleInputChange} required />
           </div>
-          <div className="form-group">
-            <button type="submit" className="submit-button">{product ? '수정' : '등록'}</button>
-          </div>
+
         </div>
         <div className="image-section">
           <div className="image-placeholder">
@@ -137,6 +135,9 @@ const ProductRegister = ({ product, closeModal }) => {
           </div>
           <input type="file" onChange={handleImageChange} />
         </div>
+        <div className="form-group">
+            <button type="submit" className="submit-button">{product ? '수정' : '등록'}</button>
+          </div>
       </form>
     </div>
   );

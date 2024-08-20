@@ -1,7 +1,7 @@
 .home {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    padding: 15px;
     height: 100%; /* 전체 화면 높이 설정 */
     margin-top: 50px; /* 헤더 높이만큼 마진을 줌 */
   }
@@ -12,6 +12,7 @@
     flex-direction: column;
     margin-right: 20px;
   }
+  
   
   .actions {
     display: flex;
@@ -49,4 +50,5 @@
     .notifications {
       display: none; /* 모바일 화면에서 숨기기 */
     }
+
   }

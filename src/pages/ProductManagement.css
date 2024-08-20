@@ -55,6 +55,8 @@
   background-color: #f8f8f8;
 }
 
+
+
 /* 수정 및 삭제 버튼 스타일 */
 .product-item button {
   padding: 8px 16px;
@@ -127,6 +129,18 @@
   .sidebar.open .sidebar-title,
   .sidebar.open .sidebar-submenu {
     display: block; /* 사이드바가 열릴 때 내용 표시 */
+  }
+
+  .product-list th{
+    font-size: 13px;
+  }
+
+  .product-list td {
+    max-width: 130px;
+    white-space: nowrap; /* 줄 바꿈 방지 */
+    overflow: hidden; /* 넘치는 내용 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 내용에 ... 표시 */
+    font-size: 11px;
   }
 }
 
