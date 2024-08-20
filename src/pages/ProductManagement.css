@@ -21,16 +21,18 @@
 }
 
 /* 상품 등록 버튼 색상 변경 */
-.search-bar button {
+.openRegisterModal {
   padding: 10px 20px;
   background-color: #d0ac88; /* 기본 색상 */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-bottom: 0px;
 }
 
-.search-bar button:hover {
+
+.openRegisterModal:hover {
   background-color: #b08968; /* 호버 시 어두운 색상 */
 }
 
@@ -101,4 +103,65 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0; /* 기본적으로 사이드바를 숨김 */
+    transition: width 0.3s;
+  }
+
+  .sidebar.open {
+    width: 200px; /* 사이드바가 열릴 때의 너비 */
+  }
+
+  .toggle-button {
+    display: block; /* 햄버거 버튼 표시 */
+  }
+
+  .sidebar-title,
+  .sidebar-submenu {
+    display: none; /* 사이드바 내용 숨김 */
+  }
+
+  .sidebar.open .sidebar-title,
+  .sidebar.open .sidebar-submenu {
+    display: block; /* 사이드바가 열릴 때 내용 표시 */
+  }
+}
+
+/* 아이폰 14를 위한 미디어 쿼리 */
+@media (max-width: 390px) {
+  .product-management {
+    padding: 10px; /* 패딩 조정 */
+  }
+
+  .search-bar {
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+  }
+
+  .search-bar input {
+    margin-right: 0; /* 오른쪽 여백 제거 */
+    margin-bottom: 10px; /* 아래 여백 추가 */
+    width: 100%; /* 입력 필드 너비 100% */
+  }
+
+  .search-bar button {
+    width: 100%; /* 버튼 너비 100% */
+  }
+
+  .product-list table {
+    font-size: 14px; /* 폰트 크기 조정 */
+  }
+
+  .product-item button {
+    padding: 6px 12px; /* 버튼 패딩 조정 */
+    font-size: 12px; /* 폰트 크기 조정 */
+  }
+
+  .product-modal {
+    max-width: 90%; /* 모달 최대 너비 조정 */
+    width: 90%; /* 모달 너비 조정 */
+  }
 }

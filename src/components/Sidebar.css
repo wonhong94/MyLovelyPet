@@ -2,28 +2,19 @@
   height: calc(100vh - 50px); /* 헤더를 제외한 높이 */
   background-color: white;
   position: fixed;
-  top: 100px; /* 헤더 높이 */
+  top: 50px; /* 헤더 높이 */
   left: 0;
   overflow-y: auto; /* 사이드바에 스크롤 추가 */
   z-index: 1001; /* 헤더보다 높은 z-index 설정 */
-  transition: width 0.3s; /* 애니메이션 효과 */
+  transition: width 0.3s ease; /* 애니메이션 효과 */
 }
 
 .sidebar.open {
-  width: 200px; /* 열린 상태의 너비 */
+  width: 250px; /* 열린 상태의 너비 */
 }
 
 .sidebar.closed {
-  width: 60px; /* 닫힌 상태의 너비 */
-}
-
-.sidebar::-webkit-scrollbar {
-  display: none; /* 웹킷 기반 브라우저 (크롬, 사파리 등)에서 스크롤바 숨기기 */
-}
-
-.sidebar {
-  -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+  width: 0; /* 닫힌 상태의 너비 */
 }
 
 .sidebar-content {
@@ -31,6 +22,7 @@
 }
 
 .toggle-button {
+  position: relative;
   display: block;
   margin: 10px auto;
   background-color: #007bff;
@@ -51,16 +43,68 @@
 
 .sidebar-title:hover {
   background-color: #ffeca0;
-  color: white;
 }
 
 .sidebar-submenu {
   list-style: none;
   padding: 0;
   padding-left: 10px;
-  text-decoration-line: none;
 }
 
 .sidebar-submenu li {
   margin-bottom: 5px;
+}
+
+/* 레이아웃 관련 스타일 */
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 전체 화면 높이 설정 */
+  margin-right: 180px; /* 사이드바 너비만큼 마진 */
+}
+
+.header {
+  flex-shrink: 0;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000; /* 헤더가 항상 최상위에 오도록 z-index 설정 */
+}
+
+.layout-content {
+  display: flex;
+  flex: 1;
+  margin-top: 50px; /* 헤더 높이만큼 마진을 줌 */
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 250px; /* 사이드바 너비만큼 마진을 줌 */
+  overflow-y: auto; /* 내용이 많아지면 스크롤 가능하도록 설정 */
+  transition: margin-left 0.3s ease; /* 애니메이션 효과 */
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0; /* 모바일에서는 고정 위치 해제 */
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+/* 스크롤바 숨기기 */
+::-webkit-scrollbar {
+  display: none; /* 웹킷 기반 브라우저 (크롬, 사파리 등)에서 스크롤바 숨기기 */
+}
+
+.sidebar {
+  -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
 }

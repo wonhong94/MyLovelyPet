@@ -75,7 +75,7 @@ const ProductManagement = () => {
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <button onClick={openRegisterModal}>상품 등록</button>
+        <button onClick={openRegisterModal} className='openRegisterModal'>상품 등록</button>
       </div>
       <div className="product-list">
         <table>

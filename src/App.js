@@ -11,11 +11,12 @@ import Inspection from './pages/Inspection';
 import InspectionHistory from './pages/InspectionHistory';
 import SignUp from './pages/Signup';
 import Login from './pages/Login';
+import SalesPage from './pages/SalesPage';
 import CCTV from './pages/cctv';
 import Alarm from './components/alarm';
 
 // import ProductUpdate from './pages/ProductUpdate';
-// import ProductDelete from './pages/ProductDelete';
+// import ProductDelete from '. /pages/ProductDelete';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
