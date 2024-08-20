@@ -1,0 +1,66 @@
+.sidebar {
+  height: calc(100vh - 50px); /* 헤더를 제외한 높이 */
+  background-color: white;
+  position: fixed;
+  top: 100px; /* 헤더 높이 */
+  left: 0;
+  overflow-y: auto; /* 사이드바에 스크롤 추가 */
+  z-index: 1001; /* 헤더보다 높은 z-index 설정 */
+  transition: width 0.3s; /* 애니메이션 효과 */
+}
+
+.sidebar.open {
+  width: 200px; /* 열린 상태의 너비 */
+}
+
+.sidebar.closed {
+  width: 60px; /* 닫힌 상태의 너비 */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* 웹킷 기반 브라우저 (크롬, 사파리 등)에서 스크롤바 숨기기 */
+}
+
+.sidebar {
+  -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+}
+
+.sidebar-content {
+  padding: 10px;
+}
+
+.toggle-button {
+  display: block;
+  margin: 10px auto;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sidebar-title {
+  cursor: pointer;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.sidebar-title:hover {
+  background-color: #ffeca0;
+  color: white;
+}
+
+.sidebar-submenu {
+  list-style: none;
+  padding: 0;
+  padding-left: 10px;
+  text-decoration-line: none;
+}
+
+.sidebar-submenu li {
+  margin-bottom: 5px;
+}

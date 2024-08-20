@@ -1,0 +1,31 @@
+.sidebar-item {
+  margin-bottom: 10px;
+  text-decoration-line: none;
+}
+
+.sidebar-title {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+}
+
+.sidebar-title:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.sidebar-submenu {
+  list-style: none;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.sidebar-submenu li {
+  margin-bottom: 5px;
+}
+
+.sidebar-submenu li a {
+  color: black; /* 하위 메뉴 글씨 색상 검정색으로 설정 */
+  text-decoration: none;
+}

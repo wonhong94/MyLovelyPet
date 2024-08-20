@@ -1,0 +1,73 @@
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color:white ;
+  height: 100px;
+
+}
+
+.header-left .logo-link {
+  text-decoration: none;
+  color: black;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.header-button {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-right: 40px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.header-button:hover{
+  background-color: #fff;
+  color: gray;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  margin-right: 40px;
+}
+
+.Signup {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-right: 40px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.logo-image {
+  height: 60px; /* 로고 이미지 높이 설정 */
+  height: 80px;
+}
+
+.Bell{
+  margin-top: 15px;
+}
+
+.bell-button{
+  background-color: #fff;
+  color:#000;
+  font-size: 20px;
+  margin-top: -5px;
+}
+
+.bell-button:hover {
+  background-color: #fff; /* 호버 시 배경색 */
+  color: gray; /* 호버 시 텍스트 색상 */
+}
+

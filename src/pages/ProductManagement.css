@@ -1,0 +1,104 @@
+.product-management {
+  padding: 20px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar label {
+  margin-right: 10px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 상품 등록 버튼 색상 변경 */
+.search-bar button {
+  padding: 10px 20px;
+  background-color: #d0ac88; /* 기본 색상 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #b08968; /* 호버 시 어두운 색상 */
+}
+
+.product-list {
+  overflow-x: auto;
+}
+
+.product-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-list th,
+.product-list td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.product-list th {
+  background-color: #f8f8f8;
+}
+
+/* 수정 및 삭제 버튼 스타일 */
+.product-item button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.product-item button:first-of-type {
+  background-color: #6c757d; /* 수정 버튼: 회색 */
+  color: white;
+}
+
+.product-item button:first-of-type:hover {
+  background-color: #5a6268; /* 수정 버튼: 호버 시 어두운 회색 */
+}
+
+.product-item button:last-of-type {
+  background-color: #dc3545; /* 삭제 버튼: 빨간색 */
+  color: white;
+}
+
+.product-item button:last-of-type:hover {
+  background-color: #c82333; /* 삭제 버튼: 호버 시 어두운 빨간색 */
+}
+
+.product-modal {
+  max-width: 800px;
+  width: 90%;
+  height: 80%;
+  overflow-y: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.product-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
