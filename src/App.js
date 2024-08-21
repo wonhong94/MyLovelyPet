@@ -37,7 +37,7 @@ const AppContent = () => {
       {!isAuthPage && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
       {!isAuthPage && (
         <button className="toggle-sidebar-button" onClick={toggleSidebar}>
-          {isSidebarOpen ? '<<' : '>>'}
+          {isSidebarOpen ? 'X' : '>'}
         </button>
       )}
       <div className="main-content">
@@ -53,6 +53,7 @@ const AppContent = () => {
           <Route path="/inspection" element={<PrivateRoute><Inspection /></PrivateRoute>} />
           <Route path="/inspectionhistory" element={<PrivateRoute><InspectionHistory /></PrivateRoute>} />
           <Route path="/productManagement" element={<PrivateRoute><ProductManagement /></PrivateRoute>} />
+          <Route path="/salesPage" element={<PrivateRoute><SalesPage /></PrivateRoute>} />
           {/* <Route path="/productUpdate" element={<PrivateRoute><ProductUpdate /></PrivateRoute>} />
           <Route path="/productDelete" element={<PrivateRoute><ProductDelete /></PrivateRoute>} /> */}
           <Route path="/alarm" element={<PrivateRoute><Alarm /></PrivateRoute>} />

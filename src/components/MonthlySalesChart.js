@@ -6,27 +6,24 @@ import './MonthlySalesChart.css';  // 수정된 CSS 파일
 
 function MonthlySalesChart() {
   const [chartData, setChartData] = useState(null);
-  const [monthlySales, setMonthlySales] = useState([]);  // 월별 매출을 저장할 상태 추가
-  const [totalSales, setTotalSales] = useState(0);  // 총합 매출을 저장할 상태 추가
+  const [monthlySales, setMonthlySales] = useState([]);
+  const [totalSales, setTotalSales] = useState(0);
   const [year, setYear] = useState(new Date().getFullYear());
 
   const fetchSalesData = async (selectedYear) => {
     try {
-      // 연도를 경로에 포함하여 API 요청을 보냅니다.
       const response = await axios.get(`/petShop/revenue/yearSales/${selectedYear}`);
-
       console.log('API Response:', response.data);
 
       if (response.data && response.data.monthlySales && typeof response.data.monthlySales === 'object') {
         const monthlySalesData = response.data.monthlySales;
         const totalPrice = response.data.totalPrice;
 
-        // 월별 매출 데이터를 배열로 변환
         const salesArray = Array.from({ length: 12 }, (_, index) => {
           const month = index + 1;
           return {
             month: month,
-            rvTotalPrice: monthlySalesData[month] || '-',  // 데이터가 없으면 '-'로 표시
+            rvTotalPrice: monthlySalesData[month] || '-',
           };
         });
 
@@ -46,19 +43,19 @@ function MonthlySalesChart() {
           ],
         });
 
-        setMonthlySales(salesArray);  // 월별 매출 데이터를 상태에 저장
-        setTotalSales(totalPrice);  // 총합 매출 데이터를 상태에 저장
+        setMonthlySales(salesArray);
+        setTotalSales(totalPrice);
       } else {
         console.error('Unexpected data format:', response.data);
         setChartData(null);
-        setMonthlySales([]);  // 오류가 발생하면 빈 배열로 설정
-        setTotalSales(0);  // 총합 매출을 0으로 설정
+        setMonthlySales([]);
+        setTotalSales(0);
       }
     } catch (error) {
       console.error('Error fetching data:', error.message);
       setChartData(null);
-      setMonthlySales([]);  // 오류 발생 시 빈 배열로 설정
-      setTotalSales(0);  // 총합 매출을 0으로 설정
+      setMonthlySales([]);
+      setTotalSales(0);
     }
   };
 
@@ -70,7 +67,6 @@ function MonthlySalesChart() {
     setYear(e.target.value);
   };
 
-  // 월별 매출 데이터를 4개월씩 끊어서 그룹으로 나누기
   const firstGroup = monthlySales.slice(0, 4);
   const secondGroup = monthlySales.slice(4, 8);
   const thirdGroup = monthlySales.slice(8, 12);
@@ -106,7 +102,10 @@ function MonthlySalesChart() {
         <tbody>
           <tr>
             {firstGroup.map((sale, index) => (
-              <td key={index}>{sale.rvTotalPrice === '-' ? '-' : `${sale.rvTotalPrice.toLocaleString()}원`}</td>
+              <td key={index}>
+                {sale.rvTotalPrice === '-' ? '-' : 
+                  (typeof sale.rvTotalPrice === 'number' ? `${sale.rvTotalPrice.toLocaleString()}원` : '데이터 없음')}
+              </td>
             ))}
           </tr>
           <tr>
@@ -116,7 +115,10 @@ function MonthlySalesChart() {
           </tr>
           <tr>
             {secondGroup.map((sale, index) => (
-              <td key={index}>{sale.rvTotalPrice === '-' ? '-' : `${sale.rvTotalPrice.toLocaleString()}원`}</td>
+              <td key={index}>
+                {sale.rvTotalPrice === '-' ? '-' : 
+                  (typeof sale.rvTotalPrice === 'number' ? `${sale.rvTotalPrice.toLocaleString()}원` : '데이터 없음')}
+              </td>
             ))}
           </tr>
           <tr>
@@ -126,11 +128,14 @@ function MonthlySalesChart() {
           </tr>
           <tr>
             {thirdGroup.map((sale, index) => (
-              <td key={index}>{sale.rvTotalPrice === '-' ? '-' : `${sale.rvTotalPrice.toLocaleString()}원`}</td>
+              <td key={index}>
+                {sale.rvTotalPrice === '-' ? '-' : 
+                  (typeof sale.rvTotalPrice === 'number' ? `${sale.rvTotalPrice.toLocaleString()}원` : '데이터 없음')}
+              </td>
             ))}
           </tr>
           <tr className="total-row">
-            <td colSpan={12}><strong>총합: {totalSales.toLocaleString()}원</strong></td>
+            <td colSpan={12}><strong>총합: {totalSales !== null ? totalSales.toLocaleString() : '데이터 없음'}원</strong></td>
           </tr>
         </tbody>
       </table>

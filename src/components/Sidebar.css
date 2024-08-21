@@ -2,19 +2,17 @@
   height: calc(100vh - 50px); /* 헤더를 제외한 높이 */
   background-color: white;
   position: fixed;
-  top: 50px; /* 헤더 높이 */
+  top: 0px;
+  bottom: 0;
   left: 0;
   overflow-y: auto; /* 사이드바에 스크롤 추가 */
   z-index: 1001; /* 헤더보다 높은 z-index 설정 */
-  transition: width 0.3s ease; /* 애니메이션 효과 */
+  transition: width 0.3s; /* 애니메이션 효과 */
 }
 
-.sidebar.open {
-  width: 250px; /* 열린 상태의 너비 */
-}
-
-.sidebar.closed {
-  width: 0; /* 닫힌 상태의 너비 */
+.sidebar {
+  -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
 }
 
 .sidebar-content {
@@ -31,6 +29,7 @@
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .sidebar-title {
@@ -43,68 +42,42 @@
 
 .sidebar-title:hover {
   background-color: #ffeca0;
+  color: white;
 }
 
 .sidebar-submenu {
   list-style: none;
   padding: 0;
   padding-left: 10px;
+  text-decoration-line: none;
 }
 
 .sidebar-submenu li {
   margin-bottom: 5px;
 }
 
-/* 레이아웃 관련 스타일 */
-.layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* 전체 화면 높이 설정 */
-  margin-right: 180px; /* 사이드바 너비만큼 마진 */
+.hamburger-button {
+  display: none; /* 기본적으로 숨김 */
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 24px; /* 햄버거 아이콘 크기 */
+  position: fixed; /* 화면의 왼쪽 상단에 고정 */
+  top: 20px; /* 헤더 아래 위치 */
+  left: 20px; /* 왼쪽 여백 */
+  z-index: 1002; /* 사이드바보다 위에 표시 */
 }
 
-.header {
-  flex-shrink: 0;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 1000; /* 헤더가 항상 최상위에 오도록 z-index 설정 */
-}
-
-.layout-content {
-  display: flex;
-  flex: 1;
-  margin-top: 50px; /* 헤더 높이만큼 마진을 줌 */
-}
-
-.main-content {
-  flex-grow: 1;
-  padding: 20px;
-  margin-left: 250px; /* 사이드바 너비만큼 마진을 줌 */
-  overflow-y: auto; /* 내용이 많아지면 스크롤 가능하도록 설정 */
-  transition: margin-left 0.3s ease; /* 애니메이션 효과 */
-}
-
-/* 모바일 대응 */
 @media (max-width: 768px) {
+  .hamburger-button {
+    display: block; /* 작은 화면에서는 햄버거 버튼 보이도록 설정 */
+  }
+
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    top: 0; /* 모바일에서는 고정 위치 해제 */
+    display: none; /* 작은 화면에서는 사이드바 숨김 */
   }
 
-  .main-content {
-    margin-left: 0;
+  .sidebar.open {
+    display: block; /* 사이드바가 열릴 때만 보이도록 설정 */
   }
-}
-
-/* 스크롤바 숨기기 */
-::-webkit-scrollbar {
-  display: none; /* 웹킷 기반 브라우저 (크롬, 사파리 등)에서 스크롤바 숨기기 */
-}
-
-.sidebar {
-  -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
 }

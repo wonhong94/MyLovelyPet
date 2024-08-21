@@ -7,6 +7,14 @@
   .controls {
     margin-bottom: 20px;
   }
+
+  .controls select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px; /* 드롭다운 메뉴 간격 추가 */
+  }
   
   .chart-wrapper {
     width: 70%;  /* 그래프의 너비를 약간 늘림 */
@@ -42,5 +50,11 @@
   .total-row {
     font-weight: bold;
     background-color: #e0e0e0;
+  }
+
+  @media (max-width : 768px){
+    .chart-wrapper{
+      margin-left: -50px;
+    }
   }
   

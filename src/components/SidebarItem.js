@@ -2,27 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SidebarItem.css';
 
-const SidebarItem = ({ title, subItems, isOpen }) => {
-  const [isSubmenuOpen, setSubmenuOpen] = useState(false);
-
-  const handleMouseEnter = () => {
-    setSubmenuOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setSubmenuOpen(false);
-  };
-
+const SidebarItem = ({ title, subItems, isOpen, onClick, isSelected }) => {
   return (
-    <div 
-      className="sidebar-item" 
-      onMouseEnter={handleMouseEnter} 
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="sidebar-title">
+    <div className={`sidebar-item ${isSelected ? 'selected' : ''}`}>
+      <div className="sidebar-title" onClick={onClick}>
         {title}
       </div>
-      {isOpen && isSubmenuOpen && (
+      {isOpen && (
         <ul className="sidebar-submenu">
           {subItems.map((subItem, index) => (
             <li key={index}>

@@ -38,6 +38,7 @@
 
 .product-list {
   overflow-x: auto;
+  
 }
 
 .product-list table {
@@ -48,11 +49,18 @@
 .product-list th,
 .product-list td {
   padding: 10px;
-  border: 1px solid #ddd;
+  border-top: 1px solid #ddd; /* 가로줄 추가 */
+  border-bottom: 1px solid #ddd; /* 가로줄 추가 */
 }
 
 .product-list th {
   background-color: #f8f8f8;
+}
+
+/* 모든 td에서 세로줄 제거 */
+.product-list td {
+  border-left: none; /* 세로줄 제거 */
+  border-right: none; /* 세로줄 제거 */
 }
 
 
@@ -65,6 +73,8 @@
   cursor: pointer;
   margin-right: 5px;
   font-size: 14px;
+  margin-top: 3px;
+  margin-bottom: 2px;
 }
 
 .product-item button:first-of-type {
@@ -130,6 +140,23 @@
   .sidebar.open .sidebar-submenu {
     display: block; /* 사이드바가 열릴 때 내용 표시 */
   }
+
+.search-bar label {
+  font-size: 16px; /* 기본 폰트 사이즈 */
+  margin-right: 5px; /* 여백 줄이기 */
+}
+
+.search-bar input {
+  font-size: 14px; /* 폰트 사이즈 줄이기 */
+  padding: 5px; /* 패딩 줄이기 */
+  margin-right: 5px; /* 여백 줄이기 */
+  width: 150px; /* 너비 줄이기 */
+}
+
+.search-bar button {
+  font-size: 14px; /* 폰트 사이즈 줄이기 */
+  padding: 5px 10px; /* 패딩 줄이기 */
+}
 
   .product-list th{
     font-size: 13px;

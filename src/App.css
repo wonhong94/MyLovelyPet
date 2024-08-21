@@ -75,8 +75,8 @@
   left: 250px; /* 사이드바 너비 옆에 위치 */
   top: 50%;
   transform: translateY(-50%);
-  background-color: #cee5ff;
-  color: white;
+  background-color: #fff;
+  color: black;
   border: none;
   padding: 10px;
   border-radius: 5px;
