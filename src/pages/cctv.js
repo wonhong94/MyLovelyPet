@@ -7,8 +7,17 @@ const StreamViewer = () => {
     const [motionData, setMotionData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showAlert, setShowAlert] = useState(false); // 알림 표시 여부
+    const [currentTime, setCurrentTime] = useState('');
+    const [isPageVisible, setIsPageVisible] = useState(!document.hidden); // 페이지 가시성 여부 초기화
 
     useEffect(() => {
+        const handleVisibilityChange = () => {
+            setIsPageVisible(!document.hidden);
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
         const fetchStreamUrl = async () => {
             setLoading(true);
             setError(null);
@@ -45,6 +54,12 @@ const StreamViewer = () => {
                 if (response.status === 200) {
                     console.log('Motion data from response:', response.data);
                     setMotionData(response.data);
+                    if (response.data === "기절" || response.data === "화재") {
+                        setShowAlert(true);
+                        setTimeout(() => {
+                            setShowAlert(false);
+                        }, 5000); // 5초 후에 알림 숨김
+                    }
                 } else {
                     throw new Error('응답 오류');
                 }
@@ -55,36 +70,85 @@ const StreamViewer = () => {
         };
 
         fetchStreamUrl(); // 스트림 URL 한 번 가져오기
-        fetchMotionData(); // 초기 모션 데이터 가져오기
 
-        const intervalId = setInterval(fetchMotionData, 15000);
+        let motionIntervalId = null;
 
-        return () => clearInterval(intervalId);
+        const startFetchingMotionData = () => {
+            if (!motionIntervalId) {
+                fetchMotionData(); // 처음에는 즉시 데이터 가져오기
+                motionIntervalId = setInterval(fetchMotionData, 15000); // 이후 15초 간격으로 데이터 가져오기
+            }
+        };
+
+        const stopFetchingMotionData = () => {
+            if (motionIntervalId) {
+                clearInterval(motionIntervalId);
+                motionIntervalId = null;
+            }
+        };
+
+        // 페이지가 활성화될 때만 데이터 가져오기
+        if (isPageVisible) {
+            startFetchingMotionData();
+        } else {
+            stopFetchingMotionData();
+        }
+
+        return () => {
+            stopFetchingMotionData();
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [isPageVisible]); // 페이지 가시성 여부를 의존성으로 추가
+
+    useEffect(() => {
+        const updateTime = () => {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString();
+            setCurrentTime(formattedTime);
+        };
+
+        updateTime(); // 초기 시간 설정
+
+        const timeIntervalId = setInterval(updateTime, 1000); // 시간을 1초 간격으로 업데이트
+
+        return () => clearInterval(timeIntervalId);
     }, []); // 의존성 배열
 
     if (loading) return <div>로딩 중...</div>;
     if (error) return <div>{error}</div>;
 
-    // motionData가 "O"일 때 빨간색 그림자 설정
-    const shadowStyle = motionData === "O" ? 'shadow-red' : 'shadow-normal';
+    let videoStyle = 'cctv-video';
+    let overlayMessage = '';
+
+    if (showAlert && motionData === "기절") {
+        videoStyle = 'cctv-video blink-border';
+        overlayMessage = "🚨응급환자 발견🚨";
+    } else if (showAlert && motionData === "화재") {
+        videoStyle = 'cctv-video blink-border';
+        overlayMessage = "🚨 화재 발생 🚨";
+    }
 
     return (
-        <div className={`cctv-container ${shadowStyle}`}>
-            {streamUrl ? (
-                <img
-                    src={streamUrl}
-                    alt="Live Stream"
-                    className="cctv-video" // 기존 비디오 스타일 클래스 사용
-                />
-            ) : (
-                <div>스트림이 없습니다</div>
-            )}
-            {motionData && (
-                <div>
-                    <h2>모션 데이터</h2>
-                    <pre>{JSON.stringify(motionData, null, 2)}</pre>
+        <div className="cctv-container">
+            <div className="video-wrapper">
+                {streamUrl ? (
+                    <img
+                        src={streamUrl}
+                        alt="Live Stream"
+                        className={videoStyle}
+                    />
+                ) : (
+                    <div>스트림이 없습니다</div>
+                )}
+                {showAlert && overlayMessage && (
+                    <div className={`motion-overlay red-text blink`}>
+                        <p>{overlayMessage}</p>
+                    </div>
+                )}
+                <div className="time-overlay">
+                    <p>{currentTime}</p>
                 </div>
-            )}
+            </div>
         </div>
     );
 };

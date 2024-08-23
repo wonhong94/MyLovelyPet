@@ -35,7 +35,7 @@
   background-color: #f8f9fa;
 }
 
-button {
+/* button {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -47,7 +47,7 @@ button {
 
 button:hover {
   background-color: #0056b3;
-}
+} */
 
 /* 캘린더 스타일링 */
 /* .orders-calendar {

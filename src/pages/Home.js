@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CustomCalendar from '../components/Calendar';
-import Notification from '../components/Notification';
-// import { messaging, onMessage } from '../config/firebase'; // FCM 관련 import 추가
 import './Home.css';
 import '../components/HomeCalendar.css';
 
@@ -10,18 +8,7 @@ function Home() {
   const [date, setDate] = useState(new Date());
   const [salesData, setSalesData] = useState({}); // 일일 매출 데이터를 저장할 상태
   const [totalSales, setTotalSales] = useState(0); // 매출 총액 상태
-
-  // useEffect(() => {
-  //   // FCM 메시지 수신 대기 설정
-  //   const unsubscribe = onMessage(messaging, (payload) => {
-  //     console.log('푸시 알림 수신:', payload);
-  //     alert(`새 알림: ${payload.notification.title} - ${payload.notification.body}`);
-  //     // 여기서 푸시 알림을 처리하는 로직을 추가할 수 있습니다.
-  //   });
-
-  //   // 컴포넌트가 언마운트될 때 메시지 수신 대기 해제
-  //   return () => unsubscribe();
-  // }, []);
+  const [monthlySales, setMonthlySales] = useState(0); // 월 매출 상태
 
   // 날짜를 "YYYY-MM-DD" 형식으로 포맷하는 함수 (로컬 타임존 기준)
   const formatDateToLocal = (date) => {
@@ -45,14 +32,18 @@ function Home() {
       if (Array.isArray(dailySales)) {
         // 일일 매출 데이터를 날짜별로 매핑하여 상태에 저장
         const formattedData = {};
+        let monthlyTotal = 0;
         dailySales.forEach(entry => {
           formattedData[entry.rvDate] = entry.rvTotalPrice;
+          monthlyTotal += entry.rvTotalPrice; // 일일 매출을 누적하여 월 매출을 계산
         });
 
         setSalesData(formattedData); // 일일 매출 데이터를 상태로 설정
+        setMonthlySales(monthlyTotal); // 월 매출 상태 설정
       } else {
         console.error('Unexpected data format:', response.data);
         setSalesData({}); // 데이터가 예상과 다르면 빈 객체로 설정
+        setMonthlySales(0); // 월 매출을 0으로 설정
       }
     } catch (error) {
       console.error('Error fetching sales data:', error.message); // 에러 메시지 출력
@@ -106,9 +97,8 @@ function Home() {
     <div className="home">
       <div className="calendar-section">
         <div className="actions">
-          {/* 현재 매출 보기 버튼 클릭 시 총 매출 데이터를 가져옴 */}
           <button className="action-btn" onClick={fetchTotalSales}>현재 매출 보기</button>
-          <button className="action-btn">매출총액: {totalSales.toLocaleString()}원</button>
+          <button className="action-btn">현재 매출 총액: {totalSales.toLocaleString()}원</button>
         </div>
         <div className="calendar">
           <CustomCalendar
@@ -116,14 +106,16 @@ function Home() {
             setDate={setDate}
             tileContent={tileContent} // 타일 콘텐츠에 매출 데이터를 표시하는 함수 전달
           />
+          <div className="monthly-sales">
+            월 매출: {monthlySales.toLocaleString()}원
+          </div>
         </div>
       </div>
-      <div className="divider"></div>
-      <div className="notifications">
+      {/* <div className="divider"></div> */}
+      {/* <div className="notifications">
         <Notification />
-      </div>
+      </div> */}
     </div>
   );
 }
-
 export default Home;

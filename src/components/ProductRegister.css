@@ -31,7 +31,10 @@
   }
   
   .form-group {
-    margin-bottom: 15px;
+    display: auto;
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
   }
   
   .form-group label {

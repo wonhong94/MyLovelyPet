@@ -48,7 +48,9 @@ const Orders = () => {
 
   const handleOrderSubmit = async () => {
     const token = localStorage.getItem('authToken'); // 로컬 스토리지에서 토큰 가져오기
-    const lastOrderDate = localStorage.getItem('lastOrderDate'); // 마지막 발주 날짜 가져오기
+    const userIdx = localStorage.getItem('userIdx'); // 로컬 스토리지에서 userIdx 가져오기
+    const lastOrderDateKey = `lastOrderDate_${userIdx}`; // 사용자별로 저장할 키 생성
+    const lastOrderDate = localStorage.getItem(lastOrderDateKey); // 사용자별 마지막 발주 날짜 가져오기
     const today = new Date().toISOString().split('T')[0];
 
     // 하루에 한 번만 발주할 수 있도록 확인
@@ -82,7 +84,7 @@ const Orders = () => {
           'Authorization': `Bearer ${token}` // 요청 헤더에 토큰 포함
         }
       });
-      localStorage.setItem('lastOrderDate', today); // 발주가 성공적으로 이루어지면 발주 날짜를 저장
+      localStorage.setItem(lastOrderDateKey, today); // 발주가 성공적으로 이루어지면 사용자별로 발주 날짜를 저장
       setModalIsOpen(true);
       setOrders(orders.map(order => ({ ...order, orderCount: 0 })));
     } catch (error) {

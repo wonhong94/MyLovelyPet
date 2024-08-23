@@ -1,10 +1,11 @@
+/* 회원가입 폼 스타일 */
 .signup-container {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  text-align: left; /* 전체 컨테이너 왼쪽 정렬 */
-  margin-top: 100px;
+  text-align: left;
+  margin-left: 100px;
 }
 
 .signup-container h2 {
@@ -33,34 +34,72 @@
   text-align: left;
 }
 
-.signup-form .form-group {
+.signup-form .signup-form-group {
   display: flex;
-  align-items: center; /* 라벨과 입력 필드를 수평으로 정렬 */
+  align-items: flex-start;
   margin-bottom: 20px;
 }
 
-.signup-form .form-group label {
-  min-width: 150px; /* 라벨의 최소 너비를 설정 */
+.signup-form .signup-form-group label {
+  min-width: 150px;
   font-weight: bold;
   font-size: 16px;
   color: #333;
-  text-align: left; /* 라벨 텍스트를 왼쪽으로 정렬 */
-  margin-right: 20px; /* 라벨과 입력 필드 사이의 간격 */
+  text-align: left;
+  margin-right: 20px;
 }
 
-.signup-form .input-wrapper {
+.signup-form .signup-input-wrapper {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.signup-form .form-group input,
-.signup-form .form-group select {
-  width: 100%; /* 모든 입력 필드의 너비를 100%로 설정 */
-  max-width: 400px; /* 입력 필드의 최대 너비를 설정 */
+.signup-form .signup-input-wrapper .input-row {
+  display: flex;
+  align-items: center;
+}
+
+.signup-form .signup-input-wrapper input,
+.signup-form .signup-input-wrapper select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비를 계산 */
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+.signup-form .signup-input-wrapper button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #d0ac88;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.signup-form .signup-input-wrapper button:hover {
+  background-color: #b08968;
+}
+
+/* 오류 메시지 스타일 */
+.signup-form .error-message {
+  margin-top: 5px;
+  color: #e74c3c;
+  font-size: 12px;
+  display: block;
+}
+
+/* 일반적인 설명 메시지 */
+.signup-form .signup-input-wrapper small {
+  margin-top: 5px;
+  color: #999;
+  font-size: 12px;
+  display: block;
 }
 
 .signup-form .password-container {
@@ -70,11 +109,10 @@
 }
 
 .signup-form .password-container input {
-  width: calc(100% - 30px); /* 아이콘 공간을 제외한 너비 설정 */
+  width: calc(100% - 30px);
 }
 
 .signup-form .toggle-password {
-  margin-left: 10px;
   cursor: pointer;
   font-size: 20px;
 }
@@ -87,6 +125,7 @@
 
 .signup-form .phone-container input {
   flex-grow: 1;
+  display: flex;
 }
 
 .signup-form .input-divider {
@@ -105,10 +144,88 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s;
-  align-self: flex-start; /* 버튼을 왼쪽 정렬 */
-  margin-left: 170px; /* 라벨과 인풋 위치에 맞춰 정렬 */
+  align-self: flex-start;
+  margin-top: 20px;
 }
 
 .signup-form button[type="submit"]:hover {
   background-color: #b08968;
+}
+
+/* 얼굴 인식 모달 창 */
+.modal-face-recognition {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;  /* 모달의 전체 크기 조정 */
+  height: 90%;  /* 모달의 전체 크기 조정 */
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.modal-face-recognition .modal-content {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-face-recognition .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* 카메라 컨테이너의 크기 조정 */
+.face-capture-container.large {
+  width: 80%;  /* 모달보다 작은 크기로 설정 */
+  height: 80%; /* 모달보다 작은 크기로 설정 */
+  position: relative;
+}
+
+.face-capture-container.large .video-feed {
+  width: 100%;  /* 카메라 크기 */
+  height: 100%; /* 카메라 크기 */
+  border-radius: 10px;
+  transform: scaleX(-1);
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.horizontal-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+}
+
+.vertical-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: white;
 }

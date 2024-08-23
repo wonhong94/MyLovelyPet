@@ -109,7 +109,7 @@ const Inspection = () => {
     <div className="inspection">
       <h2>검수하기</h2>
       <div className="date-selector">
-        <label>날짜:</label>
+        <label>발주날짜:</label>
         <input
           type="date"
           value={orderDate}

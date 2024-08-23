@@ -6,7 +6,15 @@ function DailySalesList() {
   const [dailySales, setDailySales] = useState([]);
 
   useEffect(() => {
-    axios.get('/petShop/revenue/monthSales')
+    // 현재 연도와 월을 가져옵니다.
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // JavaScript에서 월은 0부터 시작하므로 +1을 합니다.
+
+    // 요청 경로에 연도와 월을 포함합니다.
+    const requestPath = `/petShop/revenue/monthSales/${year}/${month}`;
+
+    axios.get(requestPath)
       .then(response => {
         // 응답에서 revenues를 추출하여 dailySales로 설정
         if (response.data && Array.isArray(response.data.revenues)) {

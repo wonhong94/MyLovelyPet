@@ -5,7 +5,7 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://10.10.10.219:8090',
+      target: 'http://10.10.10.225:8090',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '', // /api로 시작하는 경로를 제거하고 백엔드 서버에 요청
