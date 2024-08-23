@@ -42,7 +42,7 @@ const QRCodeScanner = ({ sessionId, onCartUpdated }) => {
                     // 비디오 일시 정지
                     video.pause();
 
-                    axios.post(`${API_BASE_URL}/cart/addCart`, {
+                    axios.post("api/petShop/cart/addCart", {
                         qrCodeText: qrCodeText,
                         sessionId: sessionId
                     }, {

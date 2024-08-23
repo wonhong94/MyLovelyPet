@@ -10,6 +10,7 @@ function PhoneNumberInput() {
   const [phoneNum, setPhoneNum] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // 경고 메시지 상태 추가
 
+  // location.state로 전달된 paymentKey를 받아옵니다.
   const paymentKey = location.state?.paymentKey || "";
 
   const handlePhoneNumberChange = (e) => {
@@ -26,7 +27,9 @@ function PhoneNumberInput() {
       return; // 제출 중단
     }
     try {
-      const response = await fetch(`${API_BASE_URL}/payment/sendPaymentList`, { // 백틱 사용
+      console.log(phoneNum);
+      console.log(paymentKey);
+      const response = await fetch("api/petShop/payment/sendPaymentList", { 
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -39,15 +42,24 @@ function PhoneNumberInput() {
 
       if (!response.ok) {
         const json = await response.json();
+        console.error('Error response from server:', json); // 오류 응답 로그
         navigate(`/fail?message=${json.message}&code=${json.code}`);
         return;
       }
 
       const json = await response.json();
+
+      // 서버 응답을 콘솔에 출력합니다.
+      console.log("Server response:", json);
+      console.log("Phone number sent:", phoneNum);
+      console.log("Payment key sent:", paymentKey);
+
+      // 서버 응답에 따라 다른 동작을 설정할 수 있습니다.
       navigate(`/success?phoneNumber=${phoneNum}`);
-      handleGoToMain();
+      handleGoToMain(); // 장바구니 삭제 후 메인으로 이동
 
     } catch (error) {
+      console.error('Error during phone number confirmation:', error);
       navigate(`/fail?message=알 수 없는 에러가 발생했습니다.&code=500`);
     }
   };
@@ -57,13 +69,14 @@ function PhoneNumberInput() {
 
     if (sessionId) {
       try {
-        await axios.delete(`${API_BASE_URL}/cart/deleteCart`, { // 백틱 사용
+        await axios.delete('api/petShop/cart/deleteCart', { // 백틱 사용
           params: { sessionId }
         });
         localStorage.removeItem("sessionId");
       } catch (error) {
+        console.error("Error deleting cart items:", error);
         alert("장바구니 항목을 삭제하는 중 오류가 발생했습니다.");
-        return;
+        return; // 오류 발생 시 홈으로 이동하지 않음.
       }
     }
 

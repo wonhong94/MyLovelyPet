@@ -24,7 +24,7 @@ export function SuccessPage() {
 
     async function confirm() {
       try {
-        const response = await fetch(`${API_BASE_URL}/payment/confirm`, {
+        const response = await fetch("api/petShop/payment/confirm", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -157,12 +157,6 @@ export function SuccessPage() {
           </div>
         )}
       </div>
-                      {/* 이동된 메인으로 버튼 */}
-          <div className="home-button-container">
-            <button onClick={handleGoToMain} className="home-button">
-            <IoIosHome size="24px" />
-          </button>
-        </div>
     </div>
   );
 }

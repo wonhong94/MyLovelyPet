@@ -15,12 +15,15 @@ const PetPage = () => {
   const [pendingUpdates, setPendingUpdates] = useState([]);
 
   const getSessionId = () => {
-    let sessionId = localStorage.getItem("sessionId");
-    if (!sessionId) {
-      sessionId = generateUUID();
-      localStorage.setItem("sessionId", sessionId);
+    if (typeof window !== 'undefined') {
+      let sessionId = localStorage.getItem("sessionId");
+      if (!sessionId) {
+        sessionId = generateUUID();
+        localStorage.setItem("sessionId", sessionId);
+      }
+      return sessionId;
     }
-    return sessionId;
+    return null;
   };
 
   const generateUUID = () => {
@@ -33,7 +36,7 @@ const PetPage = () => {
   const fetchCartList = async () => {
     try {
       const sessionId = getSessionId(); // 고유 식별자 가져오기
-      const response = await axios.get(`${API_BASE_URL}/cart/cartList`, { // API_BASE_URL 사용
+      const response = await axios.get('api/petShop/cart/cartList', { 
         params: { sessionId } // 고유 식별자를 서버로 전달
       });
 
@@ -49,6 +52,7 @@ const PetPage = () => {
   };
 
   useEffect(() => {
+    console.log(sessionId);
     fetchCartList();
   }, [setItems, setAllCart]);
 
@@ -57,31 +61,32 @@ const PetPage = () => {
     setTotalPrice(total);
   }, [items]);
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      if (pendingUpdates.length > 0) {
-        event.preventDefault();
-        event.returnValue = ''; // Chrome requires returnValue to be set
-      }
-    };
+  const handleRemoveItem = async (pdIdx) => {
+    const sessionId = getSessionId(); // 세션 ID를 가져옵니다.
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [pendingUpdates]);
-
-  const handleRemoveItem = (pdIdx) => {
+    // 클라이언트 상태에서 아이템을 먼저 제거
     const updatedItems = items.filter(item => item.pdIdx !== pdIdx);
     setAllCart(updatedItems);
     setItems(updatedItems);
 
-    // Remove from pending updates if item is removed
+    // 대기 중인 업데이트 목록에서 해당 항목 제거
     setPendingUpdates(prev => prev.filter(update => update.pdIdx !== pdIdx));
+
+    try {
+      // 서버에 삭제 요청
+      await axios.delete('api/petShop/cart/deleteCartItem', {
+        params: { sessionId, pdIdx }  // sessionId와 pdIdx를 서버에 전달
+      });
+
+      console.log(`Item with pdIdx ${pdIdx} has been removed from the server.`);
+    } catch (error) {
+      console.error('Error removing item from the server:', error);
+      alert('서버에서 항목을 삭제하는 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
-  const handlecartCountChange = async (pdIdx, delta) => {
+  const handlecartCountChange = (pdIdx, delta) => {
+    // 클라이언트 상태 즉시 업데이트
     const updatedItems = items.map(item =>
       item.pdIdx === pdIdx ? { ...item, cartCount: Math.max(1, item.cartCount + delta) } : item
     );
@@ -89,39 +94,43 @@ const PetPage = () => {
     setAllCart(updatedItems);
     setItems(updatedItems);
 
-    // 서버로 업데이트된 수량을 전송
     const updatedItem = updatedItems.find(item => item.pdIdx === pdIdx);
     if (updatedItem) {
+      setPendingUpdates(prev => {
+        const existingUpdate = prev.find(update => update.pdIdx === pdIdx);
+        if (existingUpdate) {
+          return prev.map(update =>
+            update.pdIdx === pdIdx ? { ...update, cartCount: updatedItem.cartCount } : update
+          );
+        }
+        return [...prev, { sessionId: getSessionId(), pdIdx, cartCount: updatedItem.cartCount }];
+      });
+
+      // 서버에 비동기로 업데이트 요청을 보냅니다.
+      axios.put('api/petShop/cart/updateCart', [
+        {
+          sessionId: getSessionId(),
+          pdIdx: updatedItem.pdIdx,
+          cartCount: updatedItem.cartCount
+        }
+      ])
+        .catch(error => {
+          console.error('Error updating cart on server:', error);
+          alert('장바구니를 업데이트하는 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        });
+    }
+  };
+
+  const handlePayment = async () => {
+    if (pendingUpdates.length > 0) {
       try {
-        await axios.put(`${API_BASE_URL}/cart/updateCart`, [ // API_BASE_URL 사용
-          {
-            sessionId: getSessionId(),
-            pdIdx: updatedItem.pdIdx,
-            cartCount: updatedItem.cartCount
-          }
-        ]);
+        await axios.put('api/petShop/cart/updateCart', pendingUpdates);
+        setPendingUpdates([]); // Clear the pending updates after successful update
+        navigate('/payment/checkout');
       } catch (error) {
         console.error('Error updating cart on server:', error);
         alert('장바구니를 업데이트하는 중 오류가 발생했습니다. 다시 시도해 주세요.');
       }
-    } else {
-      console.error(`Item with pdIdx ${pdIdx} not found in updatedItems`);
-    }
-  };
-
-  const handlePayment = () => {
-    if (pendingUpdates.length > 0) {
-      console.log('Pending Updates:', pendingUpdates);
-      axios.put(`${API_BASE_URL}/cart/updateCart`, pendingUpdates) // API_BASE_URL 사용
-        .then(response => {
-          console.log('Cart batch updated successfully');
-          setPendingUpdates([]);
-          navigate('/payment/checkout');
-        })
-        .catch(error => {
-          console.error('Error updating cart:', error.response || error.message);
-          alert('장바구니를 업데이트하는 중 오류가 발생했습니다. 다시 시도해 주세요.');
-        });
     } else {
       navigate('/payment/checkout');
     }

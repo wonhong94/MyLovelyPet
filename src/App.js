@@ -52,7 +52,7 @@ const AppContent = () => {
     '/cctv'
   ].includes(location.pathname);
 
-  const isKioskRoute = ['/kioskHome', '/petPage', '/payment', '/fail', '/phone-number-input', '/chat']
+  const isKioskRoute = ['/kioskHome', '/petPage', '/payment', '/fail', '/phone-number-input', '/chat', '/success']
   .some(path => location.pathname.toLowerCase().startsWith(path.toLowerCase()));
 
   console.log('Current Path:', location.pathname); // 현재 경로 확인
@@ -100,7 +100,7 @@ if (isKioskRoute) {
           <Route path="/kioskHome" element={<MainPage />} />
           <Route path="/petPage" element={<PetPage />} />
           <Route path="/payment/checkout" element={<CheckoutPage tossPayments={tossPayments} />} />
-          <Route path="/payment/success" element={<SuccessPage />} />
+          <Route path="/success" element={<SuccessPage />} />
           <Route path="/fail" element={<FailPage />} />
           <Route path="/phone-number-input" element={<PhoneNumberInput />} />
           <Route path="/chat" element={<Chatbot />} />

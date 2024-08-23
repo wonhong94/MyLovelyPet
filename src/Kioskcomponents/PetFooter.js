@@ -15,20 +15,20 @@ const Footer = () => {
     if (sessionId) {
       try {
         // 서버에 장바구니 항목 삭제 요청 보내기
-        await axios.delete(`${API_BASE_URL}/cart/deleteCart`, {
+        await axios.delete("api/petShop/cart/deleteCart", {
           params: { sessionId }
         });
 
         localStorage.removeItem("sessionId");
 
-        navigate('/');
+        navigate('/kioskHome');
       } catch (error) {
         console.error('Error deleting cart items:', error);
         alert('장바구니 항목을 삭제하는 중 오류가 발생했습니다.');
         navigate('/kioskHome'); // 잠시 설정한 것, 나중에 지울 예정
       }
     } else {
-      navigate('/');
+      navigate('/kioskHome');
     }
   };
 
