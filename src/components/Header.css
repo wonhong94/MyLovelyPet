@@ -1,101 +1,49 @@
-
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 헤더의 요소들을 중앙에 정렬 */
   align-items: center;
   padding: 10px 20px;
-  background-color:white ;
+  background-color: white;
   height: 100px;
-
+  z-index: 1002; /* 사이드바보다 높은 z-index 설정 */
+  position: relative;
 }
 
-.header-left .logo-link {
-  text-decoration: none;
-  color: black;
+.header-logo {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center; /* 로고를 중앙에 위치 */
+  margin-top: 10px; /* 로고 위에 공백 추가 */
 }
 
 .header-right {
   display: flex;
   gap: 10px;
+  position: absolute; /* 헤더 오른쪽에 고정 */
+  right: 80px; /* 헤더 오른쪽 끝에서 조금 떨어뜨림 */
+  align-items: center; /* 아이콘과 텍스트를 수평 정렬 */
 }
 
-.header-button {
-  background-color: white;
-  color: black;
-  padding: 10px 20px;
-  cursor: pointer;
+.logout-text {
   font-size: 20px;
-  margin-right: 40px;
-  transition: background-color 0.3s, color 0.3s;
-}
-.header-button:hover{
-  background-color: #fff;
-  color: gray;
-}
-
-.header-right {
-  display: flex;
-  gap: 10px;
-  flex-wrap: nowrap;
-  margin-right: 40px;
-}
-
-.Signup {
-  background-color: white;
   color: black;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 18px;
-  margin-right: 40px;
-  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer; /* 마우스를 올렸을 때 포인터 표시 */
+  transition: color 0.3s; /* 색상 변화 효과 */
+  right: 40px;
+}
+
+.logout-text:hover {
+  color: #b08968; /* 마우스를 올렸을 때 색상 변경 */
 }
 
 .logo-image {
-  height: 60px; /* 로고 이미지 높이 설정 */
-  height: 80px;
+  height: 80px; /* 로고 이미지 높이 설정 */
+  width: auto; /* 가로 비율을 자동으로 맞추기 */
 }
 
-.Bell{
-  margin-top: 15px;
-}
-
-.bell-button{
-  background-color: #fff;
-  color:#000;
-  font-size: 20px;
-  margin-top: -5px;
-}
-
-.bell-button:hover {
-  background-color: #fff; /* 호버 시 배경색 */
-  color: gray; /* 호버 시 텍스트 색상 */
-}
-
-/* 화면 크기가 작아졌을 때 헤더 높이 조정 */
-@media (max-width: 768px) {
-  .header {
-    height: 50px; /* 작은 화면에서 헤더 높이 줄이기 */
-    padding: 5px 10px; /* 패딩도 조정하여 공간을 줄임 */
-  }
-
-  .header-right {
-    display: flex;
-    gap: 10px;
-    flex-wrap: nowrap;
-    margin-right: -35px;
-  }
-
-  .header-button,
-  .Signup {
-    font-size: 16px; /* 버튼 폰트 크기 조정 */
-    padding: 8px 15px; /* 버튼 패딩 조정 */
-  }
-
-  .logo-image {
-    height: 50px; /* 작은 화면에서 로고 높이 조정 */
-  }
-
-  .Bell {
-    margin-top: 5px; /* 작은 화면에서 벨 아이콘의 마진 조정 */
-  }
+.alarm-icon {
+  height: 30px; /* 알림 아이콘 크기 조정 */
+  width: 25px; /* 비율에 맞게 크기 설정 */
+  display: inline-block; /* 이미지를 인라인 블록으로 표시 */
+  margin-top: 5px; /* 이미지를 위로 올리기 위해 하단 마진을 양수로 설정 */
 }

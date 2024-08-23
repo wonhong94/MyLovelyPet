@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ProductRegister.css';
 
-const ProductRegister = ({ product, closeModal }) => {
+const ProductRegister = ({ closeModal }) => {
   const [formData, setFormData] = useState({
-    ctgIdx: '',
-    pdCategory: '', // 상품 카테고리 필드 추가, 서버로 보내지는 않음
+    mainCategory: '',
+    subCategory: '',
     pdName: '',
     pdPrice: '',
     pdLimit: '',
@@ -13,131 +13,208 @@ const ProductRegister = ({ product, closeModal }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
 
-  useEffect(() => {
-    if (product) {
-      setFormData({
-        ctgIdx: product.category ? product.category.ctgIdx : '',
-        pdCategory: product.pdCategory || '', // 상품 카테고리 설정, 서버로는 보내지 않음
-        pdName: product.pdName,
-        pdPrice: product.pdPrice,
-        pdLimit: product.pdLimit,
-      });
-      setImagePreviewUrl(product.productInfo ? product.productInfo.pdImgUrl : null);
-    }
-  }, [product]);
+  // 카테고리 매핑 객체
+  const categoryMapping = {
+    공통: {
+      미용용품: 1,
+      외출용품: 2,
+      '급식/급수기': 3,
+    },
+    강아지: {
+      사료: 4,
+      간식: 5,
+      장난감: 6,
+      위생용품: 7,
+    },
+    고양이: {
+      사료: 8,
+      간식: 9,
+      장난감: 10,
+      위생용품: 11,
+    },
+  };
+
+  // 상위 카테고리 옵션
+  const mainCategoryOptions = Object.keys(categoryMapping);
+
+  // 하위 카테고리 옵션
+  const subCategoryOptions = formData.mainCategory
+    ? Object.keys(categoryMapping[formData.mainCategory])
+    : [];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    // 메인 카테고리가 변경되면 서브 카테고리 초기화
+    if (name === 'mainCategory') {
+      setFormData((prevData) => ({
+        ...prevData,
+        mainCategory: value,
+        subCategory: '',
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setSelectedImage(file);
+    if (file) {
+      setSelectedImage(file);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreviewUrl(reader.result);
-    };
-    reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userIdx = localStorage.getItem('userIdx'); // Assuming userIdx is stored in localStorage
+    // 유효성 검사
+    if (!formData.mainCategory || !formData.subCategory) {
+      alert('카테고리를 선택해주세요.');
+      return;
+    }
 
-    // 서버로 보낼 데이터에서 pdCategory를 제외하고 전송
+    const userIdx = localStorage.getItem('userIdx');
+    if (!userIdx) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    const ctgIdx = categoryMapping[formData.mainCategory][formData.subCategory];
+
+    // 서버로 보낼 데이터 생성
     const productData = {
-      ctgIdx: formData.ctgIdx,
+      ctgIdx: ctgIdx,
       pdName: formData.pdName,
-      pdPrice: formData.pdPrice,
-      pdLimit: formData.pdLimit,
-      userIdx: userIdx,
+      pdPrice: parseInt(formData.pdPrice, 10),
+      pdLimit: parseInt(formData.pdLimit, 10),
+      userIdx: parseInt(userIdx, 10),
     };
 
     const data = new FormData();
-    data.append('product', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    data.append(
+      'product',
+      new Blob([JSON.stringify(productData)], { type: 'application/json' })
+    );
     if (selectedImage) {
       data.append('file', selectedImage);
     }
 
     try {
-      if (product) {
-        await axios.put(`/petShop/product/update/${product.pdIdx}`, data, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        alert('상품이 성공적으로 수정되었습니다.');
-      } else {
-        await axios.post('/petShop/product/save', data, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        alert('상품이 성공적으로 등록되었습니다.');
-      }
+      await axios.post('/petShop/product/save', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('상품이 성공적으로 등록되었습니다.');
       closeModal();
     } catch (error) {
-      console.error('상품 등록/수정에 실패했습니다.', error);
-      alert('상품 등록/수정에 실패했습니다.');
+      console.error('상품 등록에 실패했습니다.', error);
+      if (error.response) {
+        console.error('서버 응답:', error.response.data);
+        alert(`상품 등록에 실패했습니다: ${error.response.data.message || '서버 오류'}`);
+      } else {
+        alert('상품 등록에 실패했습니다: 서버와의 연결에 문제가 있습니다.');
+      }
     }
   };
 
   return (
     <div className="product-register">
-      <h2>{product ? '상품 수정' : '상품 등록'}</h2>
+      <h2>상품 등록</h2>
       <div className="title-divider"></div>
       <form onSubmit={handleSubmit} className="product-register-form">
         <div className="form-section">
           <div className="form-group">
-            <label>카테고리:</label>
-            <select name="ctgIdx" value={formData.ctgIdx} onChange={handleInputChange} required>
+            <label>상위 카테고리:</label>
+            <select
+              name="mainCategory"
+              value={formData.mainCategory}
+              onChange={handleInputChange}
+              required
+            >
               <option value="">선택</option>
-              <option value="1">강아지</option>
-              <option value="2">고양이</option>
-              <option value="3">공통</option>
+              {mainCategoryOptions.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
-          {/* 상품 카테고리 선택 (서버로는 보내지 않음) */}
           <div className="form-group">
-            <label>상품 카테고리:</label>
-            <select name="pdCategory" value={formData.pdCategory} onChange={handleInputChange}>
+            <label>하위 카테고리:</label>
+            <select
+              name="subCategory"
+              value={formData.subCategory}
+              onChange={handleInputChange}
+              required
+              disabled={!formData.mainCategory}
+            >
               <option value="">선택</option>
-              <option value="사료">사료</option>
-              <option value="장난감">장난감</option>
-              <option value="간식">간식</option>
-              <option value="미용용품">미용용품</option>
-              <option value="외출용품">외출용품</option>
-              <option value="식기">식기</option>
+              {subCategoryOptions.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
           <div className="form-group">
             <label>상품명:</label>
-            <input type="text" name="pdName" value={formData.pdName} onChange={handleInputChange} required />
+            <input
+              type="text"
+              name="pdName"
+              value={formData.pdName}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div className="form-group">
             <label>상품 가격:</label>
-            <input type="number" name="pdPrice" value={formData.pdPrice} onChange={handleInputChange} required />
+            <input
+              type="number"
+              name="pdPrice"
+              value={formData.pdPrice}
+              onChange={handleInputChange}
+              required
+              min="0"
+            />
           </div>
           <div className="form-group">
             <label>최소 수량:</label>
-            <input type="number" name="pdLimit" value={formData.pdLimit} onChange={handleInputChange} required />
+            <input
+              type="number"
+              name="pdLimit"
+              value={formData.pdLimit}
+              onChange={handleInputChange}
+              required
+              min="1"
+            />
           </div>
-          <div className="form-group">
-            <button type="submit" className="submit-button">{product ? '수정' : '등록'}</button>
-          </div>
+         
         </div>
         <div className="image-section">
           <div className="image-placeholder">
-            {imagePreviewUrl ? <img src={imagePreviewUrl} alt="상품 이미지" /> : '상품 이미지 등록'}
+            {imagePreviewUrl ? (
+              <img src={imagePreviewUrl} alt="상품 이미지" />
+            ) : (
+              '상품 이미지를 등록해주세요.'
+            )}
           </div>
-          <input type="file" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
         </div>
+        <div className="form-group">
+            <button type="submit" className="submit-button">
+              등록
+            </button>
+          </div>
       </form>
     </div>
   );

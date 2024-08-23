@@ -3,8 +3,8 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  text-align: left; /* 전체 컨테이너 왼쪽 정렬 */
-  margin-top: 100px;
+  text-align: left;
+  margin-left: 100px;
 }
 
 .signup-container h2 {
@@ -33,34 +33,72 @@
   text-align: left;
 }
 
-.signup-form .form-group {
+.signup-form .signup-form-group {
   display: flex;
-  align-items: center; /* 라벨과 입력 필드를 수평으로 정렬 */
+  align-items: flex-start; /* 라벨과 입력 필드를 수평으로 정렬 */
   margin-bottom: 20px;
 }
 
-.signup-form .form-group label {
-  min-width: 150px; /* 라벨의 최소 너비를 설정 */
+.signup-form .signup-form-group label {
+  min-width: 150px;
   font-weight: bold;
   font-size: 16px;
   color: #333;
-  text-align: left; /* 라벨 텍스트를 왼쪽으로 정렬 */
-  margin-right: 20px; /* 라벨과 입력 필드 사이의 간격 */
+  text-align: left;
+  margin-right: 20px;
 }
 
-.signup-form .input-wrapper {
+.signup-form .signup-input-wrapper {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column; /* 오류 메시지와 설명 메시지를 수직으로 배치 */
 }
 
-.signup-form .form-group input,
-.signup-form .form-group select {
-  width: 100%; /* 모든 입력 필드의 너비를 100%로 설정 */
-  max-width: 400px; /* 입력 필드의 최대 너비를 설정 */
+.signup-form .signup-input-wrapper .input-row {
+  display: flex;
+  align-items: center; /* 버튼과 입력 필드를 수평으로 배치 */
+}
+
+.signup-form .signup-input-wrapper input,
+.signup-form .signup-input-wrapper select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비를 계산 */
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+.signup-form .signup-input-wrapper button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #d0ac88;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.signup-form .signup-input-wrapper button:hover {
+  background-color: #b08968;
+}
+
+/* 오류 메시지 스타일 */
+.signup-form .error-message {
+  margin-top: 5px;
+  color: #e74c3c;
+  font-size: 12px;
+  display: block;
+}
+
+/* 일반적인 설명 메시지 */
+.signup-form .signup-input-wrapper small {
+  margin-top: 5px;
+  color: #999;
+  font-size: 12px;
+  display: block; /* 설명 메시지를 입력 필드 아래에 배치 */
 }
 
 .signup-form .password-container {
@@ -74,7 +112,6 @@
 }
 
 .signup-form .toggle-password {
-  margin-left: 10px;
   cursor: pointer;
   font-size: 20px;
 }
@@ -87,6 +124,7 @@
 
 .signup-form .phone-container input {
   flex-grow: 1;
+  display: flex;
 }
 
 .signup-form .input-divider {
@@ -105,10 +143,28 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s;
-  align-self: flex-start; /* 버튼을 왼쪽 정렬 */
-  margin-left: 170px; /* 라벨과 인풋 위치에 맞춰 정렬 */
+  align-self: flex-start;
+  margin-top: 20px;
 }
 
 .signup-form button[type="submit"]:hover {
   background-color: #b08968;
+}
+
+/* 기존 모달 스타일 */
+.modal {
+  position: fixed;
+  top: 50%; /* 수정 전: 화면 중앙에 표시 */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 모달 창을 더 아래쪽에 배치 */
+.modal-lower {
+  top: 70%; /* 70% 정도로 내려서 더 아래쪽에 배치 */
 }

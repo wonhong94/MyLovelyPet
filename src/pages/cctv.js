@@ -81,7 +81,8 @@ const StreamViewer = () => {
             )}
             {motionData && (
                 <div>
-
+                    <h2>모션 데이터</h2>
+                    <pre>{JSON.stringify(motionData, null, 2)}</pre>
                 </div>
             )}
         </div>

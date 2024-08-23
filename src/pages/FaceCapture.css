@@ -1,0 +1,39 @@
+.face-capture-container {
+    position: relative;
+    display: inline-block;
+}
+
+.video-feed {
+    width: 300px;  /* 카메라 크기 확대 */
+    height: auto ;
+    border-radius: 10px;
+    transform: scaleX(-1); /* 가로 반전하여 거울 모드 적용 */
+}
+
+.crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px; /* 크기를 작게 조정 */
+    height: 50px; /* 크기를 작게 조정 */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.horizontal-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: white; /* 십자선 색상을 흰색으로 변경 */
+}
+
+.vertical-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background-color: white; /* 십자선 색상을 흰색으로 변경 */
+}

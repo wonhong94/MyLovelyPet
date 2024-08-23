@@ -1,83 +1,134 @@
-.sidebar {
-  height: calc(100vh - 50px); /* 헤더를 제외한 높이 */
-  background-color: white;
+:root {
+  --sidebar-bg-color: rgba(255, 255, 255, 0.1); /* 사이드바 기본 배경색을 반투명하게 변경 */
+  --sidebar-blur: 10px; /* 블러 강도 */
+  --sidebar-width: 250px;
+  --header-height: 50px;
+  --active-text-color: #b08968; /* 선택된 메뉴의 텍스트 색상 */
+  --menu-padding: 10px; /* 메뉴 항목의 패딩 */
+  --menu-border-radius-left: 15px; /* 메뉴 항목의 왼쪽 모서리 둥글게 */
+}
+
+.header {
   position: fixed;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  overflow-y: auto; /* 사이드바에 스크롤 추가 */
-  z-index: 1001; /* 헤더보다 높은 z-index 설정 */
-  transition: width 0.3s; /* 애니메이션 효과 */
+  top: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 2000; /* 헤더의 z-index를 높여 사이드바를 덮도록 설정 */
 }
 
 .sidebar {
-  -ms-overflow-style: none; /* 인터넷 익스플로러에서 스크롤바 숨기기 */
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  height: calc(100vh - var(--header-height)); 
+  background-color: var(--sidebar-bg-color);
+  backdrop-filter: blur(var(--sidebar-blur));
+  width: var(--sidebar-width);
+  overflow-y: auto;
+  z-index: 1001;
+  border-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-logo {
+  padding: 20px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.sidebar-logo-image {
+  width: 150px;
 }
 
 .sidebar-content {
-  padding: 10px;
+  padding-top: 150px;
 }
 
-.toggle-button {
-  position: relative;
-  display: block;
-  margin: 10px auto;
-  background-color: #007bff;
-  color: white;
-  border: none;
+::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-top: var(--header-height);
+  margin-left: var(--sidebar-width);
+  overflow-y: auto;
+  background-color: var(--content-bg-color);
+}
+
+.sidebar-item {
+  margin-bottom: 0;
+  text-align: left;
   padding: 10px;
-  border-radius: 5px;
   cursor: pointer;
-  overflow: hidden;
 }
 
 .sidebar-title {
-  cursor: pointer;
-  padding: 10px;
-  background-color: white;
-  border-radius: 4px;
-  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: #000000;
+  text-decoration: none;
+  background-color: transparent;
 }
 
-.sidebar-title:hover {
-  background-color: #ffeca0;
-  color: white;
+.sidebar-title .icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.sidebar-title.active {
+  color: var(--active-text-color);
 }
 
 .sidebar-submenu {
   list-style: none;
-  padding: 0;
-  padding-left: 10px;
-  text-decoration-line: none;
+  padding-left: 20px;
+  padding-top: 5px;
+  background-color: transparent;
+  width: 100%;
 }
 
 .sidebar-submenu li {
-  margin-bottom: 5px;
+  margin-bottom: 0;
 }
 
-.hamburger-button {
-  display: none; /* 기본적으로 숨김 */
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-size: 24px; /* 햄버거 아이콘 크기 */
-  position: fixed; /* 화면의 왼쪽 상단에 고정 */
-  top: 20px; /* 헤더 아래 위치 */
-  left: 20px; /* 왼쪽 여백 */
-  z-index: 1002; /* 사이드바보다 위에 표시 */
+.sidebar-submenu li a {
+  color: #000000;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.sidebar-submenu li.active a {
+  color: var(--active-text-color);
+}
+
+.sidebar-item.active .sidebar-title {
+  color: var(--active-text-color);
 }
 
 @media (max-width: 768px) {
-  .hamburger-button {
-    display: block; /* 작은 화면에서는 햄버거 버튼 보이도록 설정 */
-  }
-
   .sidebar {
-    display: none; /* 작은 화면에서는 사이드바 숨김 */
+    width: 100%;
+    height: auto;
   }
 
-  .sidebar.open {
-    display: block; /* 사이드바가 열릴 때만 보이도록 설정 */
+  .main-content {
+    margin-left: 0;
+    margin-top: 100px;
   }
 }
