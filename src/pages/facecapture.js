@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import './FaceCapture.css'; // CSS 파일 임포트
 
-const FaceCapture = ({ onImageCapture, startCapture }) => {
+const FaceCapture = ({ onImageCapture, startCapture, size = 'small', showCaptureButton = true }) => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -53,16 +53,20 @@ const FaceCapture = ({ onImageCapture, startCapture }) => {
     };
 
     return (
-        <div className="face-capture-container">
+        <div className={`face-capture-container ${size}`}>
             <video ref={videoRef} autoPlay className="video-feed" />
             
             {/* 십자 표시 */}
             <div className="crosshair">
-                {/* 수평선 */}
                 <div className="horizontal-line" />
-                {/* 수직선 */}
                 <div className="vertical-line" />
             </div>
+
+            {showCaptureButton && (
+                <button className="capture-button" onClick={captureImage}>
+                    얼굴 등록
+                </button>
+            )}
 
             <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>

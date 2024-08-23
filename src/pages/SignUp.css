@@ -1,3 +1,4 @@
+/* 회원가입 폼 스타일 */
 .signup-container {
   width: 100%;
   max-width: 800px;
@@ -35,7 +36,7 @@
 
 .signup-form .signup-form-group {
   display: flex;
-  align-items: flex-start; /* 라벨과 입력 필드를 수평으로 정렬 */
+  align-items: flex-start;
   margin-bottom: 20px;
 }
 
@@ -51,12 +52,12 @@
 .signup-form .signup-input-wrapper {
   flex-grow: 1;
   display: flex;
-  flex-direction: column; /* 오류 메시지와 설명 메시지를 수직으로 배치 */
+  flex-direction: column;
 }
 
 .signup-form .signup-input-wrapper .input-row {
   display: flex;
-  align-items: center; /* 버튼과 입력 필드를 수평으로 배치 */
+  align-items: center;
 }
 
 .signup-form .signup-input-wrapper input,
@@ -98,7 +99,7 @@
   margin-top: 5px;
   color: #999;
   font-size: 12px;
-  display: block; /* 설명 메시지를 입력 필드 아래에 배치 */
+  display: block;
 }
 
 .signup-form .password-container {
@@ -108,7 +109,7 @@
 }
 
 .signup-form .password-container input {
-  width: calc(100% - 30px); /* 아이콘 공간을 제외한 너비 설정 */
+  width: calc(100% - 30px);
 }
 
 .signup-form .toggle-password {
@@ -151,20 +152,80 @@
   background-color: #b08968;
 }
 
-/* 기존 모달 스타일 */
-.modal {
+/* 얼굴 인식 모달 창 */
+.modal-face-recognition {
   position: fixed;
-  top: 50%; /* 수정 전: 화면 중앙에 표시 */
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  width: 90%;  /* 모달의 전체 크기 조정 */
+  height: 90%;  /* 모달의 전체 크기 조정 */
   z-index: 1000;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
 }
 
-/* 모달 창을 더 아래쪽에 배치 */
-.modal-lower {
-  top: 70%; /* 70% 정도로 내려서 더 아래쪽에 배치 */
+.modal-face-recognition .modal-content {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-face-recognition .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* 카메라 컨테이너의 크기 조정 */
+.face-capture-container.large {
+  width: 80%;  /* 모달보다 작은 크기로 설정 */
+  height: 80%; /* 모달보다 작은 크기로 설정 */
+  position: relative;
+}
+
+.face-capture-container.large .video-feed {
+  width: 100%;  /* 카메라 크기 */
+  height: 100%; /* 카메라 크기 */
+  border-radius: 10px;
+  transform: scaleX(-1);
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.horizontal-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+}
+
+.vertical-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: white;
 }

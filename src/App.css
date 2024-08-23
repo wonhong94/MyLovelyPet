@@ -7,15 +7,13 @@ html, body {
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  margin-top: var(--header-height);
+  margin-top: 100px; /* 헤더의 높이와 일치시켜 로고가 가려지지 않게 함 */
   margin-left: var(--sidebar-width);
   overflow-y: auto; /* 스크롤 가능하도록 설정 */
   background-color: transparent; /* 배경색 제거 */
   position: relative;
-  z-index: 1;
+  z-index: 1; /* 헤더보다 낮은 z-index 설정 */
 }
-
-
 
 /* 모든 회색 박스와 관련된 스타일 제거 */
 .gray-box, .content-box, .main-container, .container, .box, .panel, .panel-default, .panel-body {
@@ -43,20 +41,27 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--header-height);
+  height: 130px; /* 헤더 높이를 더 줄임 */
   background-color: white;
-  z-index: 1002; /* 사이드바보다 높은 z-index 설정 */
+  z-index: 9999; /* 사이드바보다 높은 z-index 설정 */
   display: flex;
-  justify-content: flex-end;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: flex-start; /* 아이템들을 상단에 정렬 */
+  padding: 0 20px; /* 상하 패딩 제거 */
+}
+
+.header-logo {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  padding: 10px 20px;
+  margin-top: 10px; /* 로고를 더 위로 올리기 위해 음수 마진 사용 */
 }
 
 .sidebar {
   position: fixed;
-  top: var(--header-height); /* 헤더 바로 아래에 위치 */
+  top: 120px; /* 헤더 바로 아래에 위치하도록 조정 */
   left: 0;
-  height: calc(100vh - var(--header-height)); /* 헤더를 제외한 높이 */
+  height: 120; /* 헤더를 제외한 높이로 조정 */
   background-color: var(--sidebar-bg-color);
   width: var(--sidebar-width);
   overflow-y: auto;
@@ -79,14 +84,12 @@ html, body {
 
 /* 모달창이 더 높은 z-index를 가지도록 설정 */
 .product-modal {
-  z-index: 1000; /* 높은 값으로 설정 */
+  z-index: 10000; /* 높은 값으로 설정 */
 }
-
 
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
-    margin-top: 100px; /* 헤더 높이에 맞춰 조정 */
+    margin-top: 120px; /* 헤더 높이에 맞춰 조정 */
   }
 }
-

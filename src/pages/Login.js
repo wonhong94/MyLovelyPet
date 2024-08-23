@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import FaceCapture from './facecapture'; // FaceCapture 컴포넌트 임포트
+import Swal from 'sweetalert2'; // SweetAlert2 임포트
 import './Login.css';
 import logo from '../assets/new_image_with_white_background_with_text.png';
 
@@ -47,7 +48,11 @@ const Login = () => {
       navigate('/home');
     } catch (error) {
       console.error('로그인 실패:', error);
-      alert('로그인에 실패했습니다.');
+      Swal.fire({
+        icon: 'error',
+        title: '로그인 실패',
+        text: '로그인에 실패했습니다. 다시 시도해주세요.',
+      });
     }
   };
 
@@ -80,7 +85,11 @@ const Login = () => {
           navigate('/home');
         } catch (error) {
           console.error('얼굴 인식 로그인 실패:', error);
-          alert('얼굴 인식 로그인에 실패했습니다.');
+          Swal.fire({
+            icon: 'error',
+            title: '얼굴 인식 로그인 실패',
+            text: '얼굴 인식 로그인에 실패했습니다. 다시 시도해주세요.',
+          });
         }
       })();
     }
@@ -102,7 +111,11 @@ const Login = () => {
       return userIdxMatch ? userIdxMatch[1] : null;
     } catch (err) {
       console.error('JWT 디코딩 실패:', err);
-      alert('로그인 중 문제가 발생했습니다. 다시 시도해 주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '로그인 오류',
+        text: '로그인 중 문제가 발생했습니다. 다시 시도해 주세요.',
+      });
       return null;
     }
   };
@@ -121,7 +134,12 @@ const Login = () => {
      
       <div className="login-content">
         <div className="face-capture-container">
-          <FaceCapture onImageCapture={handleImageCapture} startCapture={startCapture} />
+          <FaceCapture 
+            onImageCapture={handleImageCapture} 
+            startCapture={startCapture} 
+            size="small" 
+            showCaptureButton={false}  // 얼굴 등록 버튼 비활성화
+          />
           <button type="button" className="face-login-button" onClick={handleFaceLogin}>얼굴 인식 로그인</button>
         </div>
         <div className="vertical-divider"></div> {/* 세로 구분선 추가 */}
@@ -150,7 +168,7 @@ const Login = () => {
             <button type="submit" className="login-button">로그인</button>
             <button type="button" onClick={handleSignUpClick} className="signup-button">회원가입</button>
             
-            <div className="secure-connection">Secure connection <span className="secure-icon">🔒</span></div>
+            
           </form>
         </div>
       </div>

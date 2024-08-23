@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CustomCalendar from '../components/Calendar';
-import Notification from '../components/Notification';
-// import { messaging, onMessage } from '../config/firebase'; // FCM 관련 import 추가
 import './Home.css';
 import '../components/HomeCalendar.css';
 

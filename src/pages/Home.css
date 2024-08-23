@@ -3,7 +3,8 @@
   justify-content: space-between;
   padding: 20px;
   height: 100%; /* 전체 화면 높이 설정 */
-  margin-top: 50px; /* 헤더 높이만큼 마진을 줌 */
+  margin-top: 10px; /* 헤더 높이만큼 마진을 줌 */
+  margin-bottom:10px;
 }
 
 .calendar-section {

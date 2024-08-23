@@ -8,6 +8,7 @@
   padding: 20px;
   box-sizing: border-box;
   margin-left: 100px;
+  margin-bottom: -200px;
 }
 
 .login-content {
@@ -46,16 +47,16 @@
 
 
 .login-logo {
-  margin-bottom: 0px;
+  margin-bottom: 30px;
   text-align: center;
-  margin-right: 290px;
+  margin-right: 340px;
   
 }
 
 .login-logo {
-  width: 150px;
+  width: 350px;
   height: auto;
-  margin-bottom: 0px;
+  margin-bottom: 30px;
 }
 
 .login-form {

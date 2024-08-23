@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FaceCapture from './facecapture'; // FaceCapture 컴포넌트 추가
+import Swal from 'sweetalert2';
+import FaceCapture from './facecapture';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -9,12 +10,12 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
     name: '',
-    phone1: '010', // 전화번호 첫 번째 칸
+    phone1: '010',
     phone2: '',
     phone3: '',
-    emailUser: '', // 이메일 사용자명
-    emailDomain: 'naver.com', // 이메일 도메인 초기값
-    customDomain: '', // 직접 입력 도메인
+    emailUser: '',
+    emailDomain: 'naver.com',
+    customDomain: '',
     businessNumber: '',
     businessStartDate: '',
     storeName: ''
@@ -23,17 +24,17 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [businessVerified, setBusinessVerified] = useState(false);
-  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
-  const [faceImage, setFaceImage] = useState(null); // 얼굴 이미지 상태 추가
-  const [passwordError, setPasswordError] = useState(''); // 비밀번호 오류 상태 추가
-  const [passwordValid, setPasswordValid] = useState(''); // 비밀번호 조건 오류 상태 추가
-  const [emailVerified, setEmailVerified] = useState(false); // 이메일 인증 상태
-  const [verificationCode, setVerificationCode] = useState(''); // 사용자가 입력하는 인증 코드
-  const [verificationModal, setVerificationModal] = useState(false); // 이메일 인증 모달 상태
-  const [isCustomDomain, setIsCustomDomain] = useState(false); // 직접 입력 여부
+  const [showModal, setShowModal] = useState(false);
+  const [faceImage, setFaceImage] = useState(null);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordValid, setPasswordValid] = useState('');
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationModal, setVerificationModal] = useState(false);
+  const [isCustomDomain, setIsCustomDomain] = useState(false);
 
   const navigate = useNavigate();
-  const faceRecognitionButtonRef = useRef(null); // 안면 인식 버튼의 참조
+  const faceRecognitionButtonRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,12 +43,10 @@ const SignUp = () => {
       [name]: value
     });
 
-    // 도메인 선택 시 "직접 입력"인 경우
     if (name === 'emailDomain') {
       setIsCustomDomain(value === '직접입력');
     }
 
-    // 비밀번호 유효성 검사
     if (name === 'password') {
       const password = value;
       const hasUpperCase = /[A-Z]/.test(password);
@@ -65,7 +64,6 @@ const SignUp = () => {
       }
     }
 
-    // 비밀번호와 비밀번호 확인 일치 여부를 확인
     if (name === 'confirmPassword') {
       if (formData.password !== value) {
         setPasswordError('비밀번호가 일치하지 않습니다.');
@@ -80,8 +78,8 @@ const SignUp = () => {
       const requestData = {
         businesses: [
           {
-            b_no: formData.businessNumber, // 문자열로 보냄
-            start_dt: formData.businessStartDate.replace(/-/g, ''), // YYYY-MM-DD to YYYYMMDD
+            b_no: formData.businessNumber,
+            start_dt: formData.businessStartDate.replace(/-/g, ''),
             p_nm: formData.name,
             p_nm2: "",
             b_nm: "",
@@ -98,56 +96,83 @@ const SignUp = () => {
       const businessData = response.data.data[0];
 
       if (businessData.valid !== "02" && businessData.status.b_stt === "계속사업자") {
-        alert('사업자 번호가 인증되었습니다.');
+        Swal.fire({
+          icon: 'success',
+          title: '사업자 인증 성공',
+          text: '사업자 번호가 인증되었습니다.',
+        });
         setBusinessVerified(true);
       } else if (businessData.valid === "02") {
-        alert('유효하지 않은 사업자 번호입니다. 다시 확인해주세요.');
+        Swal.fire({
+          icon: 'error',
+          title: '사업자 인증 실패',
+          text: '유효하지 않은 사업자 번호입니다. 다시 확인해주세요.',
+        });
         setBusinessVerified(false);
       } else if (businessData.status.b_stt !== "계속사업자") {
-        alert('해당 사업자는 계속사업자가 아닙니다. 다시 확인해주세요.');
+        Swal.fire({
+          icon: 'error',
+          title: '사업자 인증 실패',
+          text: '해당 사업자는 계속사업자가 아닙니다. 다시 확인해주세요.',
+        });
         setBusinessVerified(false);
       }
     } catch (error) {
       console.error('사업자 번호 인증 실패:', error);
-      alert('사업자 번호 인증에 실패했습니다. 다시 시도해 주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '사업자 인증 실패',
+        text: '사업자 번호 인증에 실패했습니다. 다시 시도해 주세요.',
+      });
     }
   };
 
   const handleEmailVerification = async () => {
-    // 이메일 생성
     const email = `${formData.emailUser}@${isCustomDomain ? formData.customDomain : formData.emailDomain}`;
     
     try {
-      // 이메일 인증 코드 요청
       await axios.get(`/petShop/user/sendEmailCode/${email}`);
-      setVerificationModal(true); // 인증 모달 표시
+      setVerificationModal(true);
     } catch (error) {
       console.error('이메일 인증 요청 실패:', error);
-      alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '이메일 인증 실패',
+        text: '이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.',
+      });
     }
   };
 
   const handleVerificationSubmit = async () => {
-    // 이메일 생성
     const email = `${formData.emailUser}@${isCustomDomain ? formData.customDomain : formData.emailDomain}`;
   
     try {
-      // 서버로 인증 코드 검증 요청
       const response = await axios.get(`/petShop/user/verifyEmailCode/${email}/${encodeURIComponent(String(verificationCode))}`);
   
-      // 서버로부터 받은 응답을 콘솔에 출력
       console.log('서버 응답:', response.data);
   
       if (response.data === '성공')  {
-        alert('이메일 인증이 완료되었습니다.');
+        Swal.fire({
+          icon: 'success',
+          title: '이메일 인증 성공',
+          text: '이메일 인증이 완료되었습니다.',
+        });
         setEmailVerified('성공');
-        setVerificationModal(false); // 모달 닫기
+        setVerificationModal(false);
       } else if (response.data === '실패') {
-        alert('인증 코드가 올바르지 않습니다. 다시 확인해 주세요.');
+        Swal.fire({
+          icon: 'error',
+          title: '이메일 인증 실패',
+          text: '인증 코드가 올바르지 않습니다. 다시 확인해 주세요.',
+        });
       }
     } catch (error) {
       console.error('이메일 인증 실패:', error);
-      alert('이메일 인증에 실패했습니다. 다시 시도해 주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '이메일 인증 실패',
+        text: '이메일 인증에 실패했습니다. 다시 시도해 주세요.',
+      });
     }
   };
 
@@ -155,45 +180,59 @@ const SignUp = () => {
     e.preventDefault();
 
     if (!emailVerified) {
-      alert('이메일을 인증해 주세요.');
+      Swal.fire({
+        icon: 'warning',
+        title: '이메일 인증 필요',
+        text: '이메일을 인증해 주세요.',
+      });
       return;
     }
 
     if (!businessVerified) {
-      alert('사업자 번호를 인증해 주세요.');
+      Swal.fire({
+        icon: 'warning',
+        title: '사업자 인증 필요',
+        text: '사업자 번호를 인증해 주세요.',
+      });
       return;
     }
 
     if (passwordError || passwordValid) {
-      alert('비밀번호를 확인해 주세요.');
+      Swal.fire({
+        icon: 'warning',
+        title: '비밀번호 확인 필요',
+        text: '비밀번호를 확인해 주세요.',
+      });
       return;
     }
 
-    // 이메일 도메인 결정
     const email = `${formData.emailUser}@${isCustomDomain ? formData.customDomain : formData.emailDomain}`;
 
     const userData = {
       userPhone: `${formData.phone1}-${formData.phone2}-${formData.phone3}`,
       userEmail: email,
       userPw: formData.password,
-      userBN: formData.businessNumber, // 문자열로 그대로 전송
+      userBN: formData.businessNumber,
       userName: formData.name,
       userStoreName: formData.storeName,
     };
 
-    console.log("전송 데이터:", userData); // 데이터를 콘솔에 출력하여 확인
+    console.log("전송 데이터:", userData);
 
     try {
       const response = await axios.post('/petShop/user/userSave', userData);
       console.log('회원가입 성공:', response.data);
 
       if (faceImage) {
-        // 얼굴 이미지가 있는 경우 서버로 전송 (사업자 번호를 경로에 포함)
         await axios.post(`/petShop/collectionFaceAdd/${encodeURIComponent(formData.businessNumber)}`, { image: faceImage });
         console.log("얼굴 이미지 전송 완료");
       }
 
-      alert('회원가입이 성공적으로 완료되었습니다.');
+      Swal.fire({
+        icon: 'success',
+        title: '회원가입 성공',
+        text: '회원가입이 성공적으로 완료되었습니다.',
+      });
       navigate('/login');
     } catch (error) {
       console.error('회원가입 실패:', error);
@@ -201,25 +240,18 @@ const SignUp = () => {
       if (error.response && error.response.data) {
         console.error('서버 응답:', error.response.data);
       }
-      
-      alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+
+      Swal.fire({
+        icon: 'error',
+        title: '회원가입 실패',
+        text: '회원가입에 실패했습니다. 다시 시도해 주세요.',
+      });
     }
   };
 
   const handleImageCapture = (image) => {
-    setFaceImage(image); // 캡처된 얼굴 이미지를 상태로 저장
-    setShowModal(false); // 얼굴 캡처 후 모달 닫기
-  };
-
-  const getModalPosition = () => {
-    if (faceRecognitionButtonRef.current) {
-      const buttonRect = faceRecognitionButtonRef.current.getBoundingClientRect();
-      return {
-        top: `${buttonRect.bottom + window.scrollY}px`,
-        left: `${buttonRect.left + window.scrollX}px`
-      };
-    }
-    return {};
+    setFaceImage(image);
+    setShowModal(false);
   };
 
   return (
@@ -229,6 +261,7 @@ const SignUp = () => {
       <h3>아래 회원가입 양식을 입력해주세요.</h3>
       <div className="title-divider"></div>
       <form onSubmit={handleSubmit} className="signup-form">
+        {/* 폼 필드들 */}
         <div className="signup-form-group">
           <label>이름 *</label>
           <div className="signup-input-wrapper">
@@ -247,7 +280,7 @@ const SignUp = () => {
               value={formData.businessStartDate} 
               onChange={handleChange} 
               required 
-              disabled={businessVerified} // 인증 후 비활성화
+              disabled={businessVerified} 
             />
             <small>사업등록 날짜를 입력하세요.</small>
           </div>
@@ -264,12 +297,12 @@ const SignUp = () => {
                 placeholder="사업자 번호" 
                 value={formData.businessNumber} 
                 onChange={handleChange} 
-                disabled={businessVerified} // 인증 후 비활성화
+                disabled={businessVerified} 
               />
               <button 
                 type="button" 
                 onClick={verifyBusinessNumber} 
-                disabled={businessVerified} // 인증 후 비활성화
+                disabled={businessVerified} 
                 style={{ marginLeft: '10px' }}
               >
                 인증
@@ -289,7 +322,7 @@ const SignUp = () => {
                 placeholder="user"
                 value={formData.emailUser}
                 onChange={handleChange}
-                style={{ width: '120px' }} // 이메일 사용자명 입력 칸을 짧게 조정
+                style={{ width: '120px' }} 
               />
               @
               {isCustomDomain && (
@@ -299,14 +332,14 @@ const SignUp = () => {
                   placeholder="직접 입력"
                   value={formData.customDomain}
                   onChange={handleChange}
-                  style={{ width: '150px', marginLeft: '5px' }} // 도메인 직접 입력 칸을 짧게 조정
+                  style={{ width: '150px', marginLeft: '5px' }} 
                 />
               )}
               <select
                 name="emailDomain"
                 value={formData.emailDomain}
                 onChange={handleChange}
-                style={{ width: '150px', marginLeft: '5px' }} // 도메인 선택 칸을 짧게 조정
+                style={{ width: '150px', marginLeft: '5px' }} 
               >
                 <option value="naver.com">naver.com</option>
                 <option value="gmail.com">gmail.com</option>
@@ -380,7 +413,7 @@ const SignUp = () => {
                 value={formData.phone1}
                 onChange={handleChange}
                 maxLength="3"
-                style={{ width: '60px' }} // 전화번호 입력 칸을 짧게 조정
+                style={{ width: '60px' }} 
               />
               -
               <input
@@ -390,7 +423,7 @@ const SignUp = () => {
                 value={formData.phone2}
                 onChange={handleChange}
                 maxLength="4"
-                style={{ width: '80px', marginLeft: '5px' }} // 전화번호 입력 칸을 짧게 조정
+                style={{ width: '80px', marginLeft: '5px' }} 
               />
               -
               <input
@@ -400,7 +433,7 @@ const SignUp = () => {
                 value={formData.phone3}
                 onChange={handleChange}
                 maxLength="4"
-                style={{ width: '80px', marginLeft: '5px' }} // 전화번호 입력 칸을 짧게 조정
+                style={{ width: '80px', marginLeft: '5px' }} 
               />
             </div>
           </div>
@@ -429,15 +462,16 @@ const SignUp = () => {
         <button type="submit">회원가입</button>
       </form>
 
-      {/* 모달 창 */}
-      {showModal && (
-  <div className="modal modal-lower">
+      {/* 얼굴 인식 모달 창 */}
+     {showModal && (
+  <div className="modal-face-recognition">
     <div className="modal-content">
       <span className="close" onClick={() => setShowModal(false)}>&times;</span>
-      <FaceCapture onImageCapture={handleImageCapture} />
+      <FaceCapture onImageCapture={handleImageCapture} size="large" showCaptureButton={true} />
     </div>
   </div>
 )}
+
 
       {/* 이메일 인증 모달 창 */}
       {verificationModal && (

@@ -11,6 +11,7 @@ const ProductManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
@@ -48,11 +49,22 @@ const ProductManagement = () => {
     setIsUpdateModalOpen(false);
   };
 
-  const handleDelete = async (pdIdx) => {
+  const openDeleteModal = (product) => {
+    setSelectedProduct(product);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setSelectedProduct(null);
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDelete = async () => {
     try {
-      await axios.delete(`/petShop/product/delete/${pdIdx}`);
+      await axios.delete(`/petShop/product/delete/${selectedProduct.pdIdx}`);
       alert('상품이 성공적으로 삭제되었습니다.');
       fetchProducts();
+      closeDeleteModal(); // 삭제 후 모달 닫기
     } catch (error) {
       console.error('상품 삭제에 실패했습니다.', error);
       alert('상품 삭제에 실패했습니다.');
@@ -123,7 +135,7 @@ const ProductManagement = () => {
                 <td>
                   <button onClick={() => handleQRDownload(product)}>QR</button>
                   <button onClick={() => openUpdateModal(product)}>수정</button>
-                  <button onClick={() => handleDelete(product.pdIdx)}>삭제</button>
+                  <button onClick={() => openDeleteModal(product)}>삭제</button>
                 </td>
               </tr>
             ))}
@@ -145,6 +157,18 @@ const ProductManagement = () => {
         overlayClassName="product-modal-overlay"
       >
         <ProductUpdate product={selectedProduct} closeModal={closeUpdateModal} />
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={closeDeleteModal}
+        className="delete-modal"
+        overlayClassName="product-modal-overlay"
+      >
+        <h3>상품을 삭제하시겠습니까?</h3>
+        <div className="modal-actions">
+          <button onClick={handleDelete}>Yes</button>
+          <button onClick={closeDeleteModal}>No</button>
+        </div>
       </Modal>
     </div>
   );

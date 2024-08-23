@@ -14,6 +14,10 @@ const Header = () => {
     navigate('/login');
   };
 
+  const handleAlarmClick = () => {
+    navigate('/alarm'); // '/alarm' 페이지로 이동
+  };
+
   return (
     <div className="header">
       <div className="header-logo">
@@ -22,7 +26,12 @@ const Header = () => {
         </Link>
       </div>
       <div className="header-right">
-        <img src={alarmIcon} alt="Alarm Icon" className="alarm-icon" /> {/* 새 알림 아이콘 */}
+        <img 
+          src={alarmIcon} 
+          alt="Alarm Icon" 
+          className="alarm-icon" 
+          onClick={handleAlarmClick} // 알람 아이콘 클릭 시 페이지 이동
+        />
         {auth && (
           <span className="logout-text" onClick={handleLogout}>Log Out</span>
         )}

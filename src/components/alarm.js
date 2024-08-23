@@ -11,7 +11,7 @@ const Alarm = () => {
   useEffect(() => {
     const fetchAlarms = async () => {
       try {
-        const response = await axios.get('/api/alarms'); // API 엔드포인트 수정
+        const response = await axios.get('/petShop/notice/findAll'); // API 엔드포인트 수정
         if (response.status === 200) {
           setAlarms(response.data); // 응답 데이터를 상태에 저장
         } else {

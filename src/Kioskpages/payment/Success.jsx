@@ -81,7 +81,7 @@ export function SuccessPage() {
 
     if (sessionId) {
         try {
-            await axios.delete(`${API_BASE_URL}/cart/deleteCart`, {
+            await axios.delete('api/petShop/cart/deleteCart', {
                 params: { sessionId }
             });
             localStorage.removeItem("sessionId");
