@@ -1,0 +1,92 @@
+.home-calendar {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px;
+    padding-left: 20px; /* 사이드바에서 떨어지도록 패딩 추가 */
+   
+  }
+  
+  /* 캘린더 크기 조정 및 모서리 둥글게 */
+  .react-calendar {
+    width: 100%;
+    max-width: 1200px;
+    font-size: 1rem; /* 글꼴 크기 조정 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    overflow: hidden; /* 자식 요소가 부모의 둥근 모서리를 벗어나지 않도록 */
+    
+  }
+  
+  .react-calendar__tile {
+    padding: 20px 10px; /* 타일 크기 조정 */
+    color: black; /* 기본 상태에서도 평일 날짜가 검정색으로 표시되도록 */
+   
+  }
+  
+  /* 주말 타일 스타일링 */
+  .react-calendar__month-view__days__day--weekend {
+    color: #d10000;
+  }
+  
+  /* 달력의 내부 요소들도 둥글게 */
+  .react-calendar__navigation,
+  .react-calendar__viewContainer {
+    border-radius: 10px;
+    color:black;
+    
+  }
+  .react-calendar__navigation button {
+    color: black; /* 기본 상태에서도 년도와 월이 검정색으로 표시되도록 */
+  }
+  
+  /* 마우스 오버 시에도 년도와 월이 검정색으로 유지되도록 */
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus {
+    color: black;
+  }
+  
+  .react-calendar__tile {
+    padding: 25px 30px; /* 타일 크기 조정 */
+  }
+  
+  /* 현재 날짜의 타일 스타일링 */
+  .react-calendar__tile--now {
+    background: #fdffdd !important;
+  
+    border-radius: 8px;
+  }
+  
+  /* 선택된 날짜의 타일 스타일링 */
+  .react-calendar__tile--active {
+    background-color: #fdffdd !important; /* 선택된 날짜의 배경색 */
+    color: black !important; /* 선택된 날짜의 글자색 */
+    border-radius: 8px;
+  }
+  
+  /* 선택된 날짜에 포커스되었을 때 */
+  .react-calendar__tile--active:focus {
+    background-color: #006edc; /* 포커스된 상태의 배경색 */
+    color: white; /* 포커스된 상태의 글자색 */
+    border-radius: 8px;
+  }
+  
+  /* 선택된 날짜에 호버할 때 스타일링 */
+  .react-calendar__tile--active:hover {
+    background-color: #0056b3; /* 호버된 상태의 배경색 */
+    color: white; /* 호버된 상태의 글자색 */
+    border-radius: 8px;
+  }
+  
+  /* 매출 데이터가 있는 날짜의 스타일링 */
+  .sales {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 2px;
+    font-size: 12px;
+  }
+  
+  /* 모든 날짜 타일에 마우스 오버할 때 스타일링 */
+  .react-calendar__tile:hover {
+    background-color: #fffbc0 !important; /* 마우스 오버 시 배경색 */
+    color: black; /* 마우스 오버 시 글자색 */
+    border-radius: 8px;
+  }
