@@ -74,7 +74,7 @@ function PhoneNumberInput() {
           confirmButtonText: '확인'
         });
         alert("장바구니 항목을 삭제하는 중 오류가 발생했습니다.");
-        return;  // 오류 발생 시 홈으로 이동하지 않음..
+        return;  // 오류 발생 시 홈으로 이동하지 않음
       }
     }
 

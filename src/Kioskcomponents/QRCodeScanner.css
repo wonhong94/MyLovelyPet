@@ -61,3 +61,7 @@
     height: 250px !important;
   }
 }
+
+video {
+  display: none;
+}

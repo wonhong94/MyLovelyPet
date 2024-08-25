@@ -113,7 +113,7 @@ const PetPage = () => {
         icon: 'error',
         confirmButtonText: '확인'
       });
-      // alert('서버에서 항목을 삭제하는 중 오류가 발생했습니다. 다시 시도해 주세요.');.
+      // alert('서버에서 항목을 삭제하는 중 오류가 발생했습니다. 다시 시도해 주세요.');
     }
   }, [getSessionId, items]);
 

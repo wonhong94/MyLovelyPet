@@ -70,16 +70,6 @@
   margin-top: 10px;
 }
 
-
-
-.table-container {
-  width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: 20px;
-}
-
-
 /* 테이블 스타일 수정 */
 .data-table {
   width: 100%;
@@ -112,7 +102,7 @@
   margin-top: 5px;
 }
 
-.Kiosk-cartCount-button {
+.cartCount-button {
   margin: 0 5px; /* 버튼 사이의 여백을 조정 */
   border-radius: 50%; /* 버튼을 둥글게 */
   display: flex;
@@ -124,7 +114,7 @@
   cursor: pointer;
 }
 
-.Kiosk-cartCount-button.disabled {
+.cartCount-button.disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
@@ -164,7 +154,7 @@
       height: 40px; /* 셀 높이 조정 */
   }
 
-  .Kiosk-cartCount-button {
+  .cartCount-button {
       width: 16px; /* 작은 화면에 맞게 버튼 크기 조정 */
       height: 16px;
       font-size: 9px; /* 버튼 안의 폰트 크기 줄이기 */
@@ -185,7 +175,7 @@
       padding: 15px 10px; /* 패딩을 줄여서 공간 확보 */
       height: 50px; /* 셀 높이 조정 */
   }
-  .Kiosk-cartCount-button {
+  .cartCount-button {
       width: 18px; /* 작은 화면에 맞게 버튼 크기 조정 */
       height: 18px;
       font-size: 10px; /* 버튼 안의 폰트 크기 줄이기 */
@@ -205,7 +195,7 @@
       padding: 18px 12px; /* 패딩을 약간 줄이기 */
       height: 55px; /* 셀 높이 조정 */
   }
-  .Kiosk-cartCount-button {
+  .cartCount-button {
       width: 20px; /* 중간 화면에 맞게 버튼 크기 조정 */
       height: 20px;
       font-size: 11px; /* 버튼 안의 폰트 크기 약간 줄이기 */
@@ -225,7 +215,7 @@
       padding: 20px 15px; /* 기본 패딩 유지 */
       height: 60px; /* 셀 높이 유지 */
   }
-  .Kiosk-cartCount-button {
+  .cartCount-button {
       width: 21px; /* 큰 화면에 맞게 버튼 크기 유지 */
       height: 21px;
       font-size: 12px; /* 버튼 안의 폰트 크기 유지 */
@@ -234,16 +224,4 @@
       font-size: 16px; /* 큰 화면에서 버튼 폰트 크기 유지 */
   }
 
-}
-
-.PetPage_button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 25px;
-  border: 1px solid black;
-  background-color: #FFFFFF;
-  color: black;
-  text-align: center;
-  margin-right: 10px; /* 버튼 간의 간격 조정 */
 }
