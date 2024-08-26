@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
 import './Orders.css';
 import axios from 'axios';
-
-// 모달 설정
-Modal.setAppElement('#root');
+import Swal from 'sweetalert2'; // SweetAlert2 임포트
 
 const Orders = () => {
   const [stockData, setStockData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [orders, setOrders] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [totalOrderQuantity, setTotalOrderQuantity] = useState(0);
 
-  // 서버에서 재고 데이터를 가져오는 함수
   const fetchStockData = async () => {
-    const token = localStorage.getItem('authToken'); // 로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem('authToken');
 
     try {
       const response = await axios.get('/petShop/orders/selectStock', {
         headers: {
-          'Authorization': `Bearer ${token}` // 요청 헤더에 토큰 포함
+          'Authorization': `Bearer ${token}`
         }
       });
       setStockData(response.data);
@@ -29,6 +24,11 @@ const Orders = () => {
     } catch (error) {
       console.error('Failed to fetch stock data:', error.message);
       setError('데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -47,23 +47,31 @@ const Orders = () => {
   };
 
   const handleOrderSubmit = async () => {
-    const token = localStorage.getItem('authToken'); // 로컬 스토리지에서 토큰 가져오기
-    const userIdx = localStorage.getItem('userIdx'); // 로컬 스토리지에서 userIdx 가져오기
-    const lastOrderDateKey = `lastOrderDate_${userIdx}`; // 사용자별로 저장할 키 생성
-    const lastOrderDate = localStorage.getItem(lastOrderDateKey); // 사용자별 마지막 발주 날짜 가져오기
+    const token = localStorage.getItem('authToken');
+    const userIdx = localStorage.getItem('userIdx');
+    const lastOrderDateKey = `lastOrderDate_${userIdx}`;
+    const lastOrderDate = localStorage.getItem(lastOrderDateKey);
     const today = new Date().toISOString().split('T')[0];
 
-    // 하루에 한 번만 발주할 수 있도록 확인
     if (lastOrderDate === today) {
-      alert('하루에 한 번만 발주할 수 있습니다.');
+      Swal.fire({
+        icon: 'warning',
+        title: '주의',
+        text: '하루에 한 번만 발주할 수 있습니다.',
+      });
       return;
     }
 
     const filteredOrders = orders.filter(order => order.orderCount > 0);
     if (filteredOrders.length === 0) {
-      alert('발주 수량이 1 이상인 상품이 없습니다.');
+      Swal.fire({
+        icon: 'warning',
+        title: '주의',
+        text: '발주 수량이 1 이상인 상품이 없습니다.',
+      });
       return;
     }
+
     const totalOrderQuantity = filteredOrders.reduce((total, order) => total + order.orderCount, 0);
     setTotalOrderQuantity(totalOrderQuantity);
 
@@ -76,24 +84,38 @@ const Orders = () => {
       orderCount: filteredOrders.map(order => order.orderCount),
     };
 
-    console.log('Saving order data to server:', orderData); // 디버깅 로그 추가
-
     try {
       await axios.post('/petShop/orders/save', orderData, {
         headers: {
-          'Authorization': `Bearer ${token}` // 요청 헤더에 토큰 포함
+          'Authorization': `Bearer ${token}`
         }
       });
-      localStorage.setItem(lastOrderDateKey, today); // 발주가 성공적으로 이루어지면 사용자별로 발주 날짜를 저장
-      setModalIsOpen(true);
-      setOrders(orders.map(order => ({ ...order, orderCount: 0 })));
+      localStorage.setItem(lastOrderDateKey, today);
+
+      // SweetAlert2 사용하여 발주 내역으로 이동 여부를 물어봄
+      Swal.fire({
+        title: '발주가 완료되었습니다.',
+        html: `총 발주 수량: ${totalOrderQuantity}개<br>발주내역페이지로 넘어가겠습니까?`,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/ordershistory';
+        } else {
+          window.location.href = '/home';
+        }
+      });
+
     } catch (error) {
       console.error('Error saving order:', error);
+      Swal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '발주를 저장하는 중 오류가 발생했습니다.',
+      });
     }
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
   };
 
   const categories = ['공통', '강아지', '고양이'];
@@ -139,19 +161,6 @@ const Orders = () => {
         </div>
       ))}
       <button onClick={handleOrderSubmit}>발주하기</button>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Order Confirmation"
-        className="modal"
-        overlayClassName="overlay"
-      >
-        <h2>발주가 완료되었습니다.</h2>
-        <p>총 발주 수량: {totalOrderQuantity}개</p>
-        <p>발주내역페이지로 넘어가겠습니까?</p>
-        <button onClick={() => { window.location.href = '/ordershistory'; }}>Yes</button>
-        <button onClick={() => { window.location.href = '/home'; }}>No</button>
-      </Modal>
     </div>
   );
 };

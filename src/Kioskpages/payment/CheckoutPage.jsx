@@ -52,7 +52,7 @@ export function CheckoutPage() {
     try {
       const orderId = uuidv4();
       // 결제 정보를 서버로 전송
-      const response = await fetch("/api/petShop/payment/toss", {
+      const response = await fetch("/petShop/payment/toss", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

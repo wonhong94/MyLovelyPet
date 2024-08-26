@@ -48,7 +48,7 @@
 
 .submit-group button {
   padding: 8px 16px; /* 패딩 조정으로 버튼 크기 조절 */
-  background-color: #007bff;
+  background-color: #d0ac88;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -60,7 +60,7 @@
 }
 
 .submit-group button:hover {
-  background-color: #0056b3;
+  background-color: #b08968;
 }
 
 .image-section {

@@ -58,6 +58,7 @@
 .signup-form .signup-input-wrapper .input-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* 텍스트가 넘칠 경우 줄바꿈 */
 }
 
 .signup-form .signup-input-wrapper input,
@@ -66,8 +67,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  max-width: 300px;
+  max-width: 100%; /* 최대 너비를 설정하여 반응형 */
   box-sizing: border-box;
+  margin-bottom: 10px; /* 인풋 간격 조정 */
 }
 
 .signup-form .signup-input-wrapper button {
@@ -109,12 +111,13 @@
 }
 
 .signup-form .password-container input {
-  width: calc(100% - 30px);
+  width: calc(100% - 30px); /* 눈 아이콘 공간을 제외한 너비 */
 }
 
 .signup-form .toggle-password {
   cursor: pointer;
   font-size: 20px;
+  margin-left: 10px; /* 눈 아이콘과 인풋 사이에 간격 추가 */
 }
 
 .signup-form .phone-container {
@@ -135,7 +138,8 @@
   margin: 15px 0;
 }
 
-.signup-form button[type="submit"] {
+.signup-form button[type="submit"],
+.signup-form .form-actions button[type="button"] {
   padding: 12px 20px;
   border: none;
   background-color: #d0ac88;
@@ -146,11 +150,23 @@
   transition: background-color 0.3s;
   align-self: flex-start;
   margin-top: 20px;
+  width: 100%; /* 두 버튼의 너비를 동일하게 설정 */
+  max-width: 200px; /* 최대 너비 설정 */
+  text-align: center; /* 텍스트 가운데 정렬 */
 }
 
-.signup-form button[type="submit"]:hover {
+.signup-form button[type="submit"]:hover,
+.signup-form .form-actions button[type="button"]:hover {
   background-color: #b08968;
 }
+
+.signup-form .form-actions {
+  display: flex;
+  gap: 10px; /* 버튼 간 간격 추가 */
+  margin-top: 20px;
+  justify-content: space-between; /* 버튼을 양 끝으로 배치 */
+}
+
 
 /* 얼굴 인식 모달 창 */
 .modal-face-recognition {

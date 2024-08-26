@@ -36,7 +36,7 @@ const PetPage = () => {
   const fetchCartList = async () => {
     try {
       const sessionId = getSessionId(); // 고유 식별자 가져오기
-      const response = await axios.get('api/petShop/cart/cartList', { 
+      const response = await axios.get('/petShop/cart/cartList', { 
         params: { sessionId } // 고유 식별자를 서버로 전달
       });
 
