@@ -89,8 +89,12 @@ function Home() {
     if (view === 'month') {
       const dateString = formatDateToLocal(date); // 날짜를 "YYYY-MM-DD" 형식으로 변환
       const sales = salesData[dateString]; // 해당 날짜의 매출 데이터를 가져옴
-      return sales ? <div className="sales">{sales.toLocaleString()}원</div> : null;
+
+      return (
+        sales && <div className="sales">{sales.toLocaleString()}원</div>
+      );
     }
+    return null;
   };
 
   return (
@@ -111,11 +115,8 @@ function Home() {
           </div>
         </div>
       </div>
-      {/* <div className="divider"></div> */}
-      {/* <div className="notifications">
-        <Notification />
-      </div> */}
     </div>
   );
 }
+
 export default Home;

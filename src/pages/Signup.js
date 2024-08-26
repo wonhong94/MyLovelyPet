@@ -459,7 +459,10 @@ const SignUp = () => {
           </button>
         </div>
 
-        <button type="submit">회원가입</button>
+        <div className="form-actions">
+          <button type="submit">Sign Up</button>
+          <button type="button" onClick={() => navigate('/login')}>BACK</button>
+        </div>
       </form>
 
       {/* 얼굴 인식 모달 창 */}

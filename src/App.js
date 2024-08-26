@@ -83,6 +83,7 @@ if (isKioskRoute) {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={<Login />} />
          
           {/* 보호된 경로 (로그인 필요) */}
           <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />

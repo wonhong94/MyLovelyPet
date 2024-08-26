@@ -24,7 +24,7 @@ export function SuccessPage() {
 
     async function confirm() {
       try {
-        const response = await fetch("api/petShop/payment/confirm", {
+        const response = await fetch("/petShop/payment/confirm", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
+import Swal from 'sweetalert2'; // SweetAlert2 임포트
 import './Inspection.css';
-
-// 모달 설정
-Modal.setAppElement('#root');
 
 const Inspection = () => {
   const [orders, setOrders] = useState(null); // 발주 내역 상태
   const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]); // 오늘 날짜로 초기화
   const [inspections, setInspections] = useState([]); // 검수 내역 상태
-  const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태
-  const [inspectionData, setInspectionData] = useState(null); // 전송할 검수 데이터 상태
 
   const userIdx = localStorage.getItem('userIdx'); // 로컬 스토리지에서 userIdx 가져오기
 
@@ -46,12 +41,12 @@ const Inspection = () => {
       if (insCount === orderCount) {
         newInspections[itemIndex] = {
           ...newInspections[itemIndex],
-          insDetail: '검수수량일치',
+          insDetail: '수량일치', // 예제에서 주어진 "발주" 상태
         };
       } else {
         newInspections[itemIndex] = {
           ...newInspections[itemIndex],
-          insDetail: '검수수량부족',
+          insDetail: '수량 불일치', // 예제에서 주어진 "미발주" 상태
         };
       }
     }
@@ -77,32 +72,45 @@ const Inspection = () => {
   const prepareInspectionData = () => {
     const data = {
       insCount: inspections.map(inspection => inspection.insCount),
-      insDetail: inspections.map((inspection, index) =>
-        inspection.insCount === orders.orderCount[index] ? '검수수량일치' : '검수수량부족'
-      ),
+      insDetail: inspections.map(inspection => inspection.insDetail),
       insExDate: inspections.map(inspection => inspection.insExDate),
       insDate: orderDate // 발주된 날짜로 설정
     };
-    setInspectionData(data); // 전송할 검수 데이터를 상태에 저장합니다.
+    return data; // 전송할 검수 데이터를 반환합니다.
   };
 
   const handleSave = () => {
-    prepareInspectionData(); // 데이터를 준비하고 모달을 엽니다.
-    setModalIsOpen(true);
+    const inspectionData = prepareInspectionData(); // 데이터를 준비합니다.
+
+    // SweetAlert2 사용하여 검수 내역으로 이동 여부를 물어봄
+    Swal.fire({
+      title: '검수가 완료되었습니다.',
+      text: '검수내역으로 넘어가시겠습니까?',
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmSave(inspectionData); // 검수 데이터 저장 후 검수 내역 페이지로 이동
+      } else {
+        window.location.href = '/home'; // 홈 페이지로 이동
+      }
+    });
   };
 
-  const confirmSave = async () => {
+  const confirmSave = async (inspectionData) => {
     try {
-      const response = await axios.post(`/petShop/inspection/save/`, inspectionData); // 서버로 전송
+      const response = await axios.post(`/petShop/inspection/save/`, inspectionData, {
+        headers: {
+          'Content-Type': 'application/json', // JSON 형식으로 데이터 전송
+        }
+      }); // 서버로 전송
       console.log('Inspection saved:', response.data);
       window.location.href = '/inspectionhistory'; // 검수 내역 페이지로 이동
     } catch (error) {
       console.error('Error saving inspection:', error);
     }
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
   };
 
   return (
@@ -154,20 +162,6 @@ const Inspection = () => {
       ) : (
         <p>검수 할 내역이 없습니다.</p>
       )}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="검수 완료"
-        className="modal"
-        overlayClassName="overlay"
-      >
-        <h2>검수가 완료되었습니다</h2>
-        <p>검수내역으로 넘어가시겠습니까?</p>
-        <div className="modal-buttons">
-          <button onClick={confirmSave}>YES</button>
-          <button onClick={closeModal}>NO</button>
-        </div>
-      </Modal>
     </div>
   );
 };

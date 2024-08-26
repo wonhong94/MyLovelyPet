@@ -140,7 +140,7 @@ const Login = () => {
             size="small" 
             showCaptureButton={false}  // 얼굴 등록 버튼 비활성화
           />
-          <button type="button" className="face-login-button" onClick={handleFaceLogin}>얼굴 인식 로그인</button>
+          <button type="button" className="face-login-button" onClick={handleFaceLogin}>Face Login</button>
         </div>
         <div className="vertical-divider"></div> {/* 세로 구분선 추가 */}
         <div className="login-form-container">
@@ -165,8 +165,8 @@ const Login = () => {
               />
             </div>
 
-            <button type="submit" className="login-button">로그인</button>
-            <button type="button" onClick={handleSignUpClick} className="signup-button">회원가입</button>
+            <button type="submit" className="login-button">Login</button>
+            <button type="button" onClick={handleSignUpClick} className="signup-button">Sign Up</button>
             
             
           </form>

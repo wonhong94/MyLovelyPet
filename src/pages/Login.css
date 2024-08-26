@@ -97,6 +97,7 @@ input[type="password"] {
   color: white;
   background-color: #b08968;
   border: none;
+  margin-bottom: 10px;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 0px; /* 버튼 사이의 간격을 줄임 */
