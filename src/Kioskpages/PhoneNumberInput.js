@@ -95,11 +95,11 @@ function PhoneNumberInput() {
     <div className="input-container">
       {/* 배경 분할을 위한 요소 */}
       <div className="background">
-        <div className="top-half"></div>
-        <div className="bottom-half"></div>
+        <div className="input-top-half"></div>
+        <div className="input-bottom-half"></div>
       </div>
 
-    <div className="center-text-box">
+    <div className="input-center-text-box">
       <h2>휴대폰 번호 입력</h2>
       <form onSubmit={handleSubmit}>
         <div>

@@ -18,19 +18,19 @@
   z-index: -1; /* 배경이 뒤로 가도록 설정 */
 }
 
-.top-half {
+.input-top-half {
   background-color: #ffffff;
   height: 50%;
   width: 100%; /* 추가: 너비 100%로 설정 */
 }
 
-.bottom-half {
+.input-bottom-half {
   background-color: #FFECA0;
   height: 50%;
   width: 100%; /* 추가: 너비 100%로 설정 */
 }
 
-.center-text-box {
+.input-center-text-box {
   position: absolute; /* 위치를 절대값으로 설정 */
   top: 50%; /* 화면의 중간에 위치 */
   left: 50%; /* 화면의 중앙에 위치 */
