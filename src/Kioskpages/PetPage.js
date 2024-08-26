@@ -5,8 +5,7 @@ import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 import { FaRegTrashAlt } from "react-icons/fa";
 import './PetPage.css';
-import QRCodeScanner from '../components/QRCodeScanner';
-import MainLogo from '../image/Mainlogo.png';
+import QRCodeScanner from '../Kioskcomponents/QRCodeScanner';
 import Swal from 'sweetalert2';
 import { debounce } from 'lodash';
 
@@ -167,7 +166,6 @@ const PetPage = () => {
   return (
     <Container>
       <TopHalf>
-        <img src={MainLogo} alt="Main Logo" className="main-logo" />
         <QRCodeScanner sessionId={sessionId} onCartUpdated={fetchCartList} />
       </TopHalf>
       <BottomHalf>
@@ -177,7 +175,7 @@ const PetPage = () => {
               {allCart.map(item => (
                 <tr key={item.pdIdx}>
                   <td>{item.pdName}</td>
-                  <td>
+                  <td className="kiosk-button">
                     <button
                       onClick={() => handlecartCountChange(item.pdIdx, -1)}
                       className="cartCount-button"
@@ -185,7 +183,7 @@ const PetPage = () => {
                     {item.cartCount}
                     <button
                       onClick={() => handlecartCountChange(item.pdIdx, 1)}
-                      className="cartCount-button"
+                      className="Kiosk-cartCount-button"
                     >+</button>
                   </td>
                   <td>{(item.pdPrice * item.cartCount).toLocaleString()}원</td>
@@ -196,11 +194,11 @@ const PetPage = () => {
           </table>
         </div>
         <div className="summary">
-          <p>총 금액: {totalPrice.toLocaleString()}원</p>
+          <p className='Pet-total'>총 금액: {totalPrice.toLocaleString()}원</p>
         </div>
         <button className="PetPage_button" onClick={handlePayment} disabled={totalPrice <= 0}>결제하기</button>
       </BottomHalf>
-      <div className="center-text-bar">
+      <div className="petPage-center-text-bar">
         상품을 스캔 해 주세요
       </div>
     </Container>
@@ -220,7 +218,7 @@ const Container = styled.div`
 const TopHalf = styled.div`
   width: 100%;
   height: 50%;
-  background-color: #FFFFFF;
+  background-color: #FFFFFF; /* 위쪽 절반의 배경색 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -231,7 +229,7 @@ const TopHalf = styled.div`
 const BottomHalf = styled.div`
   width: 100%;
   height: 50%;
-  background-color: #FFECA0;
+  background-color: #FFECA0; /* 아래쪽 절반의 배경색 */
   display: flex;
   flex-direction: column;
   align-items: center;

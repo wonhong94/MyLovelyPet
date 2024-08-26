@@ -1,23 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios'; // axios import 추가
+import Swal from 'sweetalert2';
 import "./PhoneNumberInput.css";
 
 function PhoneNumberInput() {
   const navigate = useNavigate();
   const location = useLocation();
   const [phoneNum, setPhoneNum] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // 경고 메시지 상태 추가
 
   // location.state로 전달된 paymentKey를 받아옵니다.
   const paymentKey = location.state?.paymentKey || "";
 
   const handlePhoneNumberChange = (e) => {
     setPhoneNum(e.target.value);
+    setErrorMessage(""); // 입력 시 에러 메시지 초기화
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
+        // 휴대폰 번호가 11자리인지 확인
+        if (phoneNum.length !== 11) {
+          setErrorMessage("휴대폰 번호는 11자리여야 합니다."); // 에러 메시지 설정
+          return; // 제출 중단
+        }
     try {
       console.log(phoneNum);
       console.log(paymentKey);
@@ -83,13 +92,14 @@ function PhoneNumberInput() {
   };
 
   return (
-    <div className="phone-number-input-container">
+    <div className="input-container">
       {/* 배경 분할을 위한 요소 */}
       <div className="background">
         <div className="top-half"></div>
         <div className="bottom-half"></div>
       </div>
 
+    <div className="center-text-box">
       <h2>휴대폰 번호 입력</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -97,16 +107,19 @@ function PhoneNumberInput() {
           <input
             type="text"
             id="phone-number"
+            className="phone_inputText"
             value={phoneNum}
             onChange={handlePhoneNumberChange}
             required
             placeholder="번호를 입력하세요"
           />
         </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* 경고 메시지 표시 */}
         <button type="submit">
           확인
         </button>
       </form>
+      </div> 
     </div>
   );
 }

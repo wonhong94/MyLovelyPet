@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Success.css";
 import { IoIosHome } from "react-icons/io";
-import Popup from "../../components/Popup"; // 대소문자를 일치시켜 임포트
+import Popup from "../../Kioskcomponents/Popup"; // 대소문자를 일치시켜 임포트
 import axios from 'axios';
 import Swal from 'sweetalert2';
 

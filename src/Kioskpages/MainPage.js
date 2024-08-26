@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './MainPage.css';
 import Swal from 'sweetalert2';
-import MainImage from '../image/Mainimage.png';  // 이미지 경로를 import
+import logo from '../assets/new_image_with_white_background_with_text.png';  // 이미지 경로를 import
 
 const MainPage = () => {
   useEffect(() => {
@@ -28,15 +28,15 @@ const MainPage = () => {
 
   return (
     <div className="main-container">
-      <div className="top-half">
-        <img src={MainImage} alt="Main" className="main-image" />
+      <div className="main-top-half">
+        <img src={logo} alt="Main" className="main-image" />
       </div>
-      <div className="bottom-half">
-        <Link to="/pet">
+      <div className="main-bottom-half">
+        <Link to="/petPage">
           <button className="Main_button">시작하기</button>
         </Link>
       </div>
-      <div className="center-text-bar">
+      <div className="main-center-text-bar">
         아래 시작하기 버튼을 눌러주세요
       </div>
     </div>

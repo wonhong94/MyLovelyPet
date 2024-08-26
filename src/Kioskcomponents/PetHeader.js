@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../components/Header.css';
-import { IoIosGlobe } from "react-icons/io";
 import { VscHubot } from "react-icons/vsc";
 
 const Header = () => {
@@ -15,7 +14,7 @@ const Header = () => {
       {location.pathname !== '/inquiry' && (
         <div className="header-right">
           <Link to="/chat">
-            <button className="contact-button"><VscHubot size="40"/></button>
+            <button className="header-Hubotbutton"><VscHubot size="40"/></button>
           </Link>
         </div>
       )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Footer.css';
+import './PetFooter.css';
 import { IoIosHome } from "react-icons/io";
 
 const Footer = () => {
