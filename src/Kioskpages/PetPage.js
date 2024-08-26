@@ -164,11 +164,11 @@ const PetPage = () => {
   const sessionId = getSessionId();
 
   return (
-    <Container>
-      <TopHalf>
+    <div className="PetPage-Container">
+      <div className="PetPage-TopHalf">
         <QRCodeScanner sessionId={sessionId} onCartUpdated={fetchCartList} />
-      </TopHalf>
-      <BottomHalf>
+      </div>
+      <div className="PetPage-BottomHalf">
         <div className="table-container">
           <table className="data-table">
             <tbody>
@@ -197,42 +197,12 @@ const PetPage = () => {
           <p className='Pet-total'>총 금액: {totalPrice.toLocaleString()}원</p>
         </div>
         <button className="PetPage_button" onClick={handlePayment} disabled={totalPrice <= 0}>결제하기</button>
-      </BottomHalf>
+      </div>
       <div className="petPage-center-text-bar">
         상품을 스캔 해 주세요
       </div>
-    </Container>
+    </div>
   );
 };
 
 export default PetPage;
-
-// Styled components
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: relative;
-`;
-
-const TopHalf = styled.div`
-  width: 100%;
-  height: 50%;
-  background-color: #FFFFFF; /* 위쪽 절반의 배경색 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`;
-
-const BottomHalf = styled.div`
-  width: 100%;
-  height: 50%;
-  background-color: #FFECA0; /* 아래쪽 절반의 배경색 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`;

@@ -7,22 +7,32 @@
   padding: 20px;
 }
 
-.top-half, .bottom-half {
+.PetPage-Container{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.PetPage-TopHalf{
   width: 100%;
+  height: 50%;
+  background-color: #FFFFFF; /* 위쪽 절반의 배경색 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
-
-.top-half {
-  height: 50%;
-  background-color: #FFFFFF; /* 위쪽 절반의 배경색 */
-}
-
-.bottom-half {
+.PetPage-BottomHalf{
+  width: 100%;
   height: 50%;
   background-color: #FFECA0; /* 아래쪽 절반의 배경색 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .main-logo {
